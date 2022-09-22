@@ -1,0 +1,33 @@
+<h2>Lisää uusi kysymys</h2>
+
+<form action="/addquestion" method="post">
+  <label for="question">Kysymys: </label><br />
+  <textarea id="question" name="question" rows="5" cols="40"></textarea>
+  <p>
+    Vastausvaihtoehdot: <br />
+    A <input type="text" name="optionA" /> <br />
+    B<input type="text" name="optionB" /> <br />
+    C<input type="text" name="optionC" /> <br />
+    D<input type="text" name="optionD" />
+  </p>
+  <label for="answer">Valitse oikea vastaus</label>
+  <p>
+    <select name="answer" id="answer">
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+    </select>
+  </p>
+  <label for="keywords"
+    >Lisää avainsana, voit lisätä useita avainsanoja eroitelemalla ne
+    puolipisteellä</label
+  >
+
+  <p>
+    <textarea id="keywords" name="keywords" rows="5" cols="40"></textarea>
+  </p>
+  <p>
+    <input type="submit" value="Lisää" />
+  </p>
+</form>

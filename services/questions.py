@@ -1,0 +1,1 @@
+#kysymyksiin littyvät tietokantaoperaatiot jne

@@ -1,0 +1,22 @@
+<h2>Kirjaudu sisään</h2>
+<p>testikäyttäjä: nimi: testi, salasana: testi</p>
+
+<form action="/login" method="post">
+  Nimi: <br />
+  <input type="Text" name="username" />
+  <p>Salasana: <br /><input type="password" name="password" /></p>
+  <p>
+    <input type="submit" value="Kirjaudu" />
+  </p>
+</form>
+<h2>tai luo uusi käyttäjä</h2>
+
+<form action="/newUser" method="post">
+  Nimi: <br />
+  <input type="Text" name="username" />
+  <p>Salasana: <br /><input type="password" name="password" /></p>
+  <p>Salasana uudelleen: <br /><input type="password" name="password" /></p>
+  <p>
+    <input type="submit" value="Luo uusi" />
+  </p>
+</form>
