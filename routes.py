@@ -61,7 +61,7 @@ def one_question(id):
     question_set = questions.get_all_questions()    
     if id >= len(question_set):
         #This will ultimately render the results view 
-        return render_template("index.html")
+        return redirect("/")
     id +=1
     return render_template("game.html", id=id, question=question_set[id-1])    
 
