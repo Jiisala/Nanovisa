@@ -1,16 +1,16 @@
 {%extends "layout.html"%} {% block content %}
 <hr />
-kysymys {{id}}: {{question[0]}}<br />
+kysymys {{id}}: {{question[1]}}<br />
 <hr />
 <form action="/answer" method="post">
-  A) {{question[1]}}
+  A) {{question[2]}}
   <input type="radio" id="answer" name="answer" value="1" checked="checked" />
   <br />
-  B) {{question[2]}}
+  B) {{question[3]}}
   <input type="radio" id="answer" name="answer" value="2" /> <br />
-  C) {{question[3]}} <input type="radio" id="answer" name="answer" value="3" />
+  C) {{question[4]}} <input type="radio" id="answer" name="answer" value="3" />
   <br />
-  D) {{question[4]}}
+  D) {{question[5]}}
   <input type="radio" id="answer" name="answer" value="4" />
   <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
   <input type="hidden" name="correct_answer" value="{{question[6]}}" />
