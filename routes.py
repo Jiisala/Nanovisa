@@ -54,7 +54,8 @@ def new_question():
         
         if not questions.add_question(question, choice1, choice2, choice3, choice4, answer, keywords):
             return render_template("error.html", message = "Syystä tai toisesta kysymyksen lisääminen meni pieleen")
-        return redirect("/")
+        
+        return render_template("newquestion.html")
 
 @app.route("/game/<int:id>")
 def one_question(id):
