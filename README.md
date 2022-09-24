@@ -2,27 +2,30 @@
 
 NanoVisa on tietokilpailusovellus jossa käyttäjät voivat itse luoda kysymyksiä ja vastata toistensa kysymyksiin. Kysymyksistä voi luoda haluamansa pituisen setin ja avainsanoilla voi rajata kysymysvalikoimaa koskemaan tiettyjä aihealueita.
 
+Sovellus on testattavissa Herokussa
+[https://nanovisa.herokuapp.com/](https://nanovisa.herokuapp.com/)
+
 Tämän hetkinen tila:
 
-Projektille on kehitetty karkea perustoiminnallisuus.
+Projektille on kehitetty karkea perustoiminnallisuus. Pääosa ajasta on mennyt Jinjan käytön harjoitteluun.
 
--Käyttäjän lisääminen ja sisäänkirjautuminen toimivat.
--Kysymyksiä voi lisätä ja niihin voi vastata.
--Oikea ja väärä vastaus tunnistetaan, mutta tiedolla ei vielä tehdä mitään.
--Sivuilla navigoiminen toimii kuten sen haluankin toimivan.
--Tietokannasta on luotu alustava versio, mutta se on aivan liian yksinkertainen kurssin tavoitteisiin nähden.
--Käyttäjillä on kaksi roolia käyttäjä ja admin, nämä eivät vielä eroa toisistaan, eikä adminin luomiselle ole implementoitua mekaniikkaa.
+- Käyttäjän lisääminen ja sisäänkirjautuminen toimivat. Ne noudattelevat esimerkkisovelluksen logiikkaa, mutta oletan ettei ole tarkoitus keksiä pyörää uudestaan.
+- Kysymyksiä voi lisätä ja niihin voi vastata.
+- Oikea ja väärä vastaus tunnistetaan, mutta tiedolla ei vielä tehdä mitään.
+- Sivuilla navigoiminen toimii kuten sen haluankin toimivan.
+- Tietokannasta on luotu alustava versio, mutta se on aivan liian yksinkertainen kurssin tavoitteisiin nähden.
+- Käyttäjillä on kaksi roolia käyttäjä ja admin, nämä eivät vielä eroa toisistaan, eikä adminin luomiselle ole implementoitua mekaniikkaa.
 
 Seuraavat askeleet:
 
--Tietokannasta on jo olemassa uusi versio, joka on kuitenkin vielä hieman keskeneräinen.
--pistelasku ja tilastointi on myös työn alla.
--Käyttäjälle näytettävät virheilmoitukset on tarkoitus saada näkymään järkevästi samalla sivulla jolla virhe on tapahtunut.
--Kysymys settien luominen on myös toteuttamatta.
--Kuten on myös moni muu alun perin suunniteltu toiminnallisuus
--Sivujen ulkoasun parantamisen säästän viimeiseksi.
+- Tietokannasta on jo olemassa uusi versio, joka on kuitenkin vielä hieman keskeneräinen.
+- Pistelasku ja tilastointi on myös työn alla.
+- Käyttäjälle näytettävät virheilmoitukset on tarkoitus saada näkymään järkevästi samalla sivulla jolla virhe on tapahtunut.
+- Kysymys settien luominen on myös toteuttamatta.
+- Kuten on myös moni muu alun perin suunniteltu toiminnallisuus
+- Sivujen ulkoasun parantamisen säästän viimeiseksi.
 
-# ----------------v Tästä alaspäin alkuperäinen suunnitelma v ----------------
+### -- Tästä alaspäin alkuperäinen suunnitelma --
 
 Alustava hahmotelma sovelluksesta. Tämä tulee varmasti elämään projektin edetessä.
 
