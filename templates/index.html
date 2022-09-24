@@ -1,8 +1,11 @@
-TÄMÄ ON TESTISIVU </br>
-Kysymysten määrä: {{ count }}
-<hr />
-Jos kysymyksiä olisi ne näytettäisiin tässä </br>
-{% for message in messages %} {{ message.content }}
-<hr />
-{% endfor %}
+{%extends "layout.html"%} {% block content %}
+<p>
+  Myöhemmin tässä muodostetaan uusi setti kysymyksiä valitsemalla dropdown menuista
+  asetukset <br />
+  
+</p>
+<a href="/game/0">Toistaiseksi tästä klikkaamalla pääset peliin jossa on kaikki lisätyt kysymykset</a>
 
+{%endblock%}
+
+</form>

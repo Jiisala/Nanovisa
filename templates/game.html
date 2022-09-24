@@ -1,0 +1,21 @@
+{%extends "layout.html"%} {% block content %}
+<hr />
+kysymys {{id}}: {{question[0]}}<br />
+<hr />
+<form action="/answer" method="post">
+  A) {{question[1]}}
+  <input type="radio" id="answer" name="answer" value="1" checked="checked" />
+  B) A {{question[2]}}
+  <input type="radio" id="answer" name="answer" value="2" /> C) A
+  {{question[3]}} <input type="radio" id="answer" name="answer" value="3" /> D)
+  A {{question[4]}}
+  <input type="radio" id="answer" name="answer" value="4" />
+  <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
+  <input type="hidden" name="correct_answer" value="{{question[6]}}" />
+  <input type="hidden" name="id" value="{{id}}" />
+
+  <input type="submit" value="Lukitse vastaus" />
+</form>
+<hr />
+
+{%endblock%}
