@@ -37,7 +37,8 @@ def login_user():
 
 @app.route("/newquestion", methods=["GET", "POST"])
 def new_question():
-    
+    if not users.check_logged():
+        return render_template("login.html")
     if request.method == "GET":
         return render_template("newquestion.html")
     if request.method == "POST":
@@ -74,6 +75,9 @@ def answered_question():
     return redirect(f"/game/{request.form['id']}")
 
 @app.route("/logout")
+
 def logout():
+    if not users.check_logged():
+        return render_template("login.html")
     users.logout()
     return redirect("/")

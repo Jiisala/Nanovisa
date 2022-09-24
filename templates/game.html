@@ -5,10 +5,12 @@ kysymys {{id}}: {{question[0]}}<br />
 <form action="/answer" method="post">
   A) {{question[1]}}
   <input type="radio" id="answer" name="answer" value="1" checked="checked" />
-  B) A {{question[2]}}
-  <input type="radio" id="answer" name="answer" value="2" /> C) A
-  {{question[3]}} <input type="radio" id="answer" name="answer" value="3" /> D)
-  A {{question[4]}}
+  <br />
+  B) {{question[2]}}
+  <input type="radio" id="answer" name="answer" value="2" /> <br />
+  C) {{question[3]}} <input type="radio" id="answer" name="answer" value="3" />
+  <br />
+  D) {{question[4]}}
   <input type="radio" id="answer" name="answer" value="4" />
   <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
   <input type="hidden" name="correct_answer" value="{{question[6]}}" />
