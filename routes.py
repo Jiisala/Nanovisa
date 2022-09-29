@@ -45,14 +45,17 @@ def new_question():
         users.check_csrf()
         
         question =request.form["question"]
-        choice1 =request.form["choice1"]
-        choice2 =request.form["choice2"]
-        choice3 =request.form["choice3"]
-        choice4 =request.form["choice4"]
-        answer =int(request.form["answer"])
-        keywords =request.form["keywords"]
+        answer = request.form["answer"]
+        choices = request.form.getlist("choice")
         
-        if not questions.add_question(question, choice1, choice2, choice3, choice4, answer, keywords):
+        if not all(choices):
+            return render_template("error.html", message= "Anna neljä vastausvaihtoehtoa")
+        keywords =request.form.getlist("keywords")
+        if not any([a is not "" for a in keywords]):
+            return render_template("error.html", message= "Anna vähintään yksi avainsana")
+
+        print(keywords)
+        if not questions.add_question(question, choices, answer, keywords):
             return render_template("error.html", message = "Syystä tai toisesta kysymyksen lisääminen meni pieleen")
         
         return render_template("newquestion.html")

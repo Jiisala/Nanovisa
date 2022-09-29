@@ -17,14 +17,15 @@ def get_all_questions():
     questions = result.fetchall()
     return questions
 
-def add_question(question, choice1, choice2, choice3, choice4, answer, keywords, flag=False):
+def add_question(question, choices, answer, keywords, flag=False):
     userid = session.get("user_id")
+    
     if question == "":
         return False
     try:
         sql = """INSERT INTO questions (question, choice1, choice2, choice3, choice4, answer, keywords, userid, flag)
                  VALUES (:question, :choice1, :choice2, :choice3, :choice4, :answer, :keywords, :userid, :flag)"""
-        db.session.execute(sql, {"question":question, "choice1":choice1, "choice2":choice2, "choice3":choice3, "choice4":choice4, "answer":answer, "keywords":keywords, "userid":userid, "flag":flag})
+        db.session.execute(sql, {"question":question, "choice1":choices[0], "choice2":choices[1], "choice3":choices[2], "choice4":choices[3], "answer":answer, "keywords":keywords, "userid":userid, "flag":flag})
         db.session.commit()
     except:
         
