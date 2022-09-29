@@ -1,8 +1,11 @@
 <header>
+  {% if session.user_id%}
   <nav>
     <a href="/">Etusivu</a>
-    <a href="/login">kirjaudu / uusi käyttäjä</a>
     <a href="/newquestion">lisää uusi kysymys</a>
     <a href="/logout">kirjaudu ulos</a>
   </nav>
+  {%else%}
+  <nav></nav>
+  {%endif%}
 </header>
