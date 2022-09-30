@@ -4,8 +4,12 @@
 
 <form action="/login" method="post">
   Nimi: <br />
-  <input type="Text" name="username" />
-  <p>Salasana: <br /><input type="password" name="password" /></p>
+  <input type="Text" name="username" required/>
+  <p>Salasana: <br /><input type="password" name="password" required/></p>
+  {% for message in get_flashed_messages(category_filter=["error_login"])%}
+  <div class="message_error" >
+    {{ message }}
+  {% endfor %}
   <p>
     <input type="submit" value="Kirjaudu" />
   </p>
@@ -14,11 +18,15 @@
 
 <form action="/newuser" method="post">
   Nimi: <br />
-  <input type="Text" name="username" />
-  <p>Salasana: <br /><input type="password" name="password" /></p>
+  <input type="Text" name="username" required/>
+  <p>Salasana: <br /><input type="password" name="password" required/></p>
   <p>
-    Salasana uudelleen: <br /><input type="password" name="passwordAgain" />
+    Salasana uudelleen: <br /><input type="password" name="passwordAgain" required/>
   </p>
+  {% for message in get_flashed_messages(category_filter=["error_new_user"])%}
+  <div class="message_error" >
+    {{ message }}
+  {% endfor %}
   <p>
     <input type="submit" value="Luo uusi" />
   </p>

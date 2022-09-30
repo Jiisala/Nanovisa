@@ -18,17 +18,30 @@ def get_all_questions():
     return questions
 
 def add_question(question, choices, answer, keywords):
-    userid = session.get("user_id")
+    user_id = session.get("user_id")
     
     if question == "":
         return False
     try:
         sql = """INSERT INTO questions (question, choice1, choice2, choice3, choice4, answer, keywords, user_id)
-                 VALUES (:question, :choice1, :choice2, :choice3, :choice4, :answer, :keywords, :userid)"""
-        db.session.execute(sql, {"question":question, "choice1":choices[0], "choice2":choices[1], "choice3":choices[2], "choice4":choices[3], "answer":answer, "keywords":keywords, "userid":userid})
+                 VALUES (:question, :choice1, :choice2, :choice3, :choice4, :answer, :keywords, :user_id)"""
+        db.session.execute(sql, {"question":question, "choice1":choices[0], "choice2":choices[1], "choice3":choices[2], "choice4":choices[3], "answer":answer, "keywords":keywords, "user_id":user_id})
         db.session.commit()
     except:
         
         return False
     return True
 
+def question_answered(question_id, correct):
+    user_id = session.get("user_id")
+
+    try:
+        sql = """INSERT INTO answers_given (question_id, user_id, correct)
+                 VALUES (:question_id, :user_id, :correct)"""
+        db.session.execute(sql, {"question_id": question_id, "user_id" :user_id, "correct" :correct})
+        db.session.commit()
+    except:
+        print("epäonni")
+        return False
+    print("onni")    
+    return True 

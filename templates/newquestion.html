@@ -1,27 +1,22 @@
-<head>
-  <title>AutoComplete</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
-
-  <link
-    href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
-    rel="stylesheet"
-    type="text/css"
-  />
-</head>
 {%extends "layout.html"%} {% block content %}
 <h2>Lisää uusi kysymys</h2>
-
+{% for message in get_flashed_messages(category_filter=["message success"])%}
+  <div class="message_success" >
+    {{ message }}
+</div>
+    {% endfor %}
+  
 <form action="/newquestion" method="post">
   <label for="question">Kysymys: </label><br />
-  <textarea id="question" name="question" rows="5" cols="40"></textarea>
+  <textarea id="question" name="question" rows="5" cols="40" required></textarea>
   <p>
+
     Vastausvaihtoehdot: <br />
     {%for a in ["A","B","C","D"]%}
-    {{a}}:  <input type="text" id="choice" name="choice" /> <br />
+    {{a}}:  <input type="text" id="choice" name="choice" required /> <br />
     {%endfor%}
-  </p>
+    </p>
   <label for="answer">Valitse oikea vastaus</label>
   <p>
     <select name="answer" id="answer">
@@ -35,19 +30,23 @@
     >Lisää korkeintaan neljä avainsanaa</label
   >
 
-  <p>{%for a in range(4)%}
-    {{a+1}}. <input type="text" id="keywords" name="keywords">
+  <p>
+    {%for a in range(4)%}
+    {% if a == 0%} 
+    {{a+1}}. <input type="text" id="keywords0" name="keywords0" required>
+    {% else %} 
+    {{a+1}}. <input type="text" id="keywords{{a}}" name="keywords_rest">
+    {%endif%} 
     <script>
       $( function() {
         suggestions = ["aapeli", "peepeli", "keepeli"];
-        $( "#keywords").autocomplete({
+        $( "#keywords{{a}}").autocomplete({
           source: suggestions
         })
       })
     </script> <br/>
     {%endfor%}
   </input>
-  
   </p>
   <p>
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
