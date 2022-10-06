@@ -1,52 +1,54 @@
-
 {%extends "layout.html"%} {% block content %}
 <h2>Lisää uusi kysymys</h2>
 {% for message in get_flashed_messages(category_filter=["message success"])%}
-  <div class="message_success" >
-    {{ message }}
-</div>
-    {% endfor %}
-  
+<div class="message_success">{{ message }}</div>
+{% endfor %}
+
 <form action="/newquestion" method="post">
   <label for="question">Kysymys: </label><br />
-  <textarea id="question" name="question" rows="5" cols="40" required></textarea>
+  <textarea
+    id="question"
+    name="question"
+    rows="5"
+    cols="40"
+    required
+  ></textarea>
   <p>
-
     Vastausvaihtoehdot: <br />
-    {%for a in ["A","B","C","D"]%}
-    {{a}}:  <input type="text" id="choice" name="choice" required /> <br />
+    {%for a in ["A","B","C","D"]%} {{a}}:
+    <input type="text" id="choice" name="choice" required /> <br />
     {%endfor%}
-    </p>
+  </p>
   <label for="answer">Valitse oikea vastaus</label>
   <p>
     <select name="answer" id="answer">
-      <option value="1">A: </option>
-      <option value="2">B: </option>
-      <option value="3">C: </option>
-      <option value="4">D: </option>
+      <option value="1">A:</option>
+      <option value="2">B:</option>
+      <option value="3">C:</option>
+      <option value="4">D:</option>
     </select>
   </p>
-  <label for="keywords"
-    >Lisää korkeintaan neljä avainsanaa</label
-  >
+  <label for="keywords">Lisää korkeintaan neljä avainsanaa</label>
 
   <p>
-    {%for a in range(4)%}
-    {% if a == 0%} 
-    {{a+1}}. <input type="text" id="keywords0" name="keywords0" required>
-    {% else %} 
-    {{a+1}}. <input type="text" id="keywords{{a}}" name="keywords_rest">
-    {%endif%} 
+    {%for a in range(4)%} {% if a == 0%} {{a+1}}.
+    <input type="text" id="keywords0" name="keywords0" required /> {% else %}
+    {{a+1}}. <input type="text" id="keywords{{a}}" name="keywords_rest" />
+    {%endif%}
     <script>
-      $( function() {
-        suggestions = ["aapeli", "peepeli", "keepeli"];
-        $( "#keywords{{a}}").autocomplete({
-          source: suggestions
+      $(function () {
+        autocomplete = [
+        {% for suggestion in  suggestions %}
+        "{{suggestion}}",
+        {%endfor%}
+      ]
+        $("#keywords{{a}}").autocomplete({
+          source: autocomplete,
         })
       })
-    </script> <br/>
+    </script>
+    <br />
     {%endfor%}
-  </input>
   </p>
   <p>
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />

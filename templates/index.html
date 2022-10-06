@@ -1,11 +1,36 @@
 {%extends "layout.html"%} {% block content %}
 <p>
-  Myöhemmin tässä muodostetaan uusi setti kysymyksiä valitsemalla dropdown menuista
-  asetukset <br />
+  Tässä voit valita sopivat parametrit pelillesi
+  <form action="/game_start" method="post">
+  Kysymysten määrä (1-20): <input type="number" id="how_many" name="how_many" min="1" max="20" require> <br/>
+    <br/>
+    Kirjoita toivomasi aiheet. Mikäli aiheista ei ole kysymyksiä tai et kirjoita yhtään ehdotusta valitaan aiheet satunnaisesti: <br/>
+    {%for a in range(4)%} 
+    {{a+1}}. <input type="text" id="keywords{{a}}" name="keywords" />
+    
+    <script>
+      
+      $(function () {
+      autocomplete = [
+        {% for suggestion in  suggestions %} 
+        "{{suggestion}}", 
+        {%endfor%}
+      ]
+        $("#keywords{{a}}").autocomplete({
+          source: autocomplete,
+        })
+      })
+    </script>
+    <br />
+    {%endfor%}
   
+  Sisällytä omat<input type="checkbox" id="include_own" name="include_own"><br/>
+  Sisällytä jo kerran vastatut<input type="checkbox" id="include_answered" name="include_answered"><br/>
+  Täytä satunnaisilla? <input type="checkbox" id="fill_with_random" name="fill_with_random"><br/>
+  <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
+  <input type="submit" value="Aloita peli" />
+
+
+  </form>
 </p>
-<a href="/game/0">Toistaiseksi tästä klikkaamalla pääset peliin jossa on kaikki lisätyt kysymykset</a>
-
 {%endblock%}
-
-</form>
