@@ -162,6 +162,7 @@ def get_questions_include_answered(keywords, user_id):
             print("fails, includeanswered")
             return False
     return questions
+
 def get_questions_include_own_and_answered(keywords):
     if all(a == '' for a in keywords):
         try:

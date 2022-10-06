@@ -15,6 +15,7 @@ kysymys {{id}}: {{question[1]}}<br />
   <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
   <input type="hidden" name="correct_answer" value="{{question[6]}}" />
   <input type="hidden" name="id" value="{{id}}" />
+  <input type="hidden" name="question_id" value="{{ question[0] }}" />
 
   <input type="submit" value="Lukitse vastaus" />
 </form>

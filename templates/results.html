@@ -1,2 +1,12 @@
-{%extends "layout.html"%} {% block content %} {% for question in temp %}
-{{question[1]}} {%endfor%} {%endblock%}
+{%extends "layout.html"%} {% block content %} Vastatut kysymykset:
+<br />
+{% for i in range (question_set | length) %} {% set correct_answer =
+question_set[i][6] %} {{i +1}}: {{question_set[i][1]}}<br />
+vastasit: {{ question_set[i][answers_this_round[i][1]+1] }}<br />
+oikea vastaus oli: {{question_set[ i ][question_set[i][6]+1]}}<br />
+{% if answers_this_round[i][3] == 0 %} Koska olit vastannut samaan kysymykseen
+aiemmin, et voi saada tästä pisteitä. {%elif question_set[i][11] ==
+session.user_id %} Koska tämä oli itse lisäämäsi kysymys, et voi saada tästä
+pistettä {% else %} Sait tästä kysymyksestä {{answers_this_round[i][2] *1}}
+pistettä {% endif %}<br />
+{%endfor%} {%endblock%}

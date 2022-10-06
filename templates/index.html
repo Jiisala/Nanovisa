@@ -2,7 +2,7 @@
 <p>
   Tässä voit valita sopivat parametrit pelillesi
   <form action="/game_start" method="post">
-  Kysymysten määrä (1-20): <input type="number" id="how_many" name="how_many" min="1" max="20" require> <br/>
+  Kysymysten määrä (1-20): <input type="number" id="how_many" name="how_many" min="1" max="20" required> <br/>
     <br/>
     Kirjoita toivomasi aiheet. Mikäli aiheista ei ole kysymyksiä tai et kirjoita yhtään ehdotusta valitaan aiheet satunnaisesti: <br/>
     {%for a in range(4)%} 
