@@ -21,7 +21,11 @@ CREATE TABLE questions (
     choice3 TEXT, 
     choice4 TEXT, 
     answer INTEGER, 
-    keywords TEXT, 
+    keyword1 TEXT,
+    keyword2 TEXT, 
+    keyword3 TEXT, 
+    keyword4 TEXT, 
+
     user_id INTEGER REFERENCES users ON DELETE CASCADE 
 );
 
@@ -36,7 +40,8 @@ CREATE TABLE answers_given (
     id SERIAL PRIMARY KEY,
     question_id INTEGER REFERENCES questions ON DELETE CASCADE, 
     user_id INTEGER REFERENCES users ON DELETE CASCADE, 
-    correct BOOLEAN
+    correct BOOLEAN,
+    UNIQUE(question_id, user_id)
 );
 --Collects together the questions added by each user
 --Mainly used for convinience when needed 
