@@ -85,6 +85,7 @@ def full_game():
     fill_with_random = request.form.get("fill_with_random")
     
     question_set= questions.get_new_question_set(how_many, keywords, include_own, include_answered, fill_with_random )
+    print (question_set)
     answers_this_round = []
     return redirect("game/0")
 
@@ -94,6 +95,7 @@ def one_question(id):
     if id >= len(question_set):
         return redirect("/results")
     id +=1
+    print ("id", id)
     return render_template("game.html", id=id, question=question_set[id-1])    
 
 @app.route("/results")
