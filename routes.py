@@ -96,6 +96,7 @@ def one_question(id):
         return redirect("/results")
     id +=1
     print ("id", id)
+    print("next q", question_set[id-1])
     return render_template("game.html", id=id, question=question_set[id-1])    
 
 @app.route("/results")
