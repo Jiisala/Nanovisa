@@ -84,7 +84,7 @@ def full_game():
 @app.route("/game/<int:id>")
 def one_question(id):
     global question_set
-    if id >= len(question_set): 
+    if id >= len(question_set):
         return redirect("/results")
     id +=1
     return render_template("game.html", id=id, question=question_set[id-1])    
@@ -93,7 +93,9 @@ def one_question(id):
 def results():
     global question_set
     global answers_this_round
-    return render_template("results.html", question_set =question_set, answers_this_round = answers_this_round )
+    user_score = questions.get_user_score()
+    position = questions.get_user_position()
+    return render_template("results.html", question_set =question_set, answers_this_round = answers_this_round, user_score = user_score, position = position )
     
 @app.route("/answer", methods=["POST"])
 def answered_question():

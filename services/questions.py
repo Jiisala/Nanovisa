@@ -4,7 +4,7 @@ from random import shuffle
 
 #This function will pass calls to other specialized functions
 #The queries will get all questons matching the given arguments, 
-#because selecting random lines in SQL is costly operation compared to python
+#because selecting random lines in SQL is costly operation compared to python.
 #I'm fairly certain that there is a more elegant way of doing many things here, but this should work
 
 def get_new_question_set(how_many, keywords, include_own, include_answered, fill_with_random ):
@@ -80,6 +80,7 @@ def get_questions_with_all_constrains(keywords, user_id):
             print("fails, allconst")
             return False
     return questions    
+
 def get_questions_include_own(keywords, user_id):
     if all(a == '' for a in keywords):
         try:
@@ -124,6 +125,7 @@ def get_questions_include_own(keywords, user_id):
             print("fails, includeown")
             return False
     return questions
+
 def get_questions_include_answered(keywords, user_id):
     if all(a == '' for a in keywords):
         try:
@@ -220,7 +222,6 @@ def fill_with_rest_with_random(questions, how_many):
     print("quest", questions)
     return questions
 
-#Used when user given constrains return too few questions and user has checked the fill with random checkbox
 def get_all_questions():
     
     sql = "SELECT * FROM questions"
@@ -255,6 +256,34 @@ def question_answered(question_id, correct):
         return False    
     return True 
 
+def count_highscore():
+    try:
+        sql = """SELECT user_id, COUNT(correct) FROM answers_given AS a
+        WHERE correct = TRUE
+        GROUP BY a.user_id
+        ORDER BY a.count DESC"""
+        result = db.session.execute(sql)
+        highscores = result.fetchall()
+    except:
+        return False
+    return highscores
+def get_user_score():
+    user_id = session.get("user_id")
+    try:
+        sql = """SELECT COUNT(correct) FROM answers_given
+        WHERE correct = TRUE and user_id = :user_id
+        """
+        result = db.session.execute(sql, {"user_id":user_id})
+        user_score = result.fetchone()
+    except:
+        return False
+    return user_score
+
+def get_user_position():
+    highscores = count_highscore()
+    position = [a for a, b in enumerate(highscores) if b[0] == session.get("user_id")]
+    return position
+    
 #used for autocomplete
 def get_all_keywords():
     

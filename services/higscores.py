@@ -1,1 +1,0 @@
-#highscorelistaan liittyvät tietokantaoperaatiot jne
