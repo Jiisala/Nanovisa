@@ -27,6 +27,13 @@ def login():
             flash("virheellinen käyttäjätunnus tai salasana", "error_login")
         return redirect("/")
 
+@app.route("/logout")
+def logout():
+    if not users.check_logged():
+        return render_template("login.html")
+    users.logout()
+    return redirect("/")
+
 @app.route("/newuser", methods=["POST"])
 def login_user():
     username = request.form["username"]
@@ -111,10 +118,8 @@ def answered_question():
         answers_this_round.append((question_id, answer, correct_or_not, 0))
     return redirect(f"/game/{id}")
 
-@app.route("/logout")
-
-def logout():
-    if not users.check_logged():
-        return render_template("login.html")
-    users.logout()
-    return redirect("/")
+@app.route("/highscores")
+def highscores():
+    highscorelist = questions.count_highscore()
+    print(highscorelist)
+    return render_template("highscores.html", highscorelist = highscorelist)

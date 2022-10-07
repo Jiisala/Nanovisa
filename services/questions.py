@@ -258,10 +258,12 @@ def question_answered(question_id, correct):
 
 def count_highscore():
     try:
-        sql = """SELECT user_id, COUNT(correct) FROM answers_given AS a
-        WHERE correct = TRUE
-        GROUP BY a.user_id
-        ORDER BY a.count DESC"""
+        sql = """SELECT A.id, A.name, count(B.correct) FROM answers_given AS B 
+        JOIN users AS A on A.id = B.user_id 
+        WHERE correct = TRUE 
+        GROUP BY A.id 
+        ORDER BY (count) DESC
+        """
         result = db.session.execute(sql)
         highscores = result.fetchall()
     except:
@@ -283,7 +285,7 @@ def get_user_position():
     highscores = count_highscore()
     position = [a for a, b in enumerate(highscores) if b[0] == session.get("user_id")]
     return position
-    
+
 #used for autocomplete
 def get_all_keywords():
     
