@@ -4,9 +4,6 @@ from flask import redirect, render_template, request
 from services import users
 from services import questions
 
-question_set = []
-answers_this_round = []
-
 
 @app.route("/")
 def index():
@@ -76,49 +73,46 @@ def new_question():
 
 @app.route("/game_start", methods=["POST"])
 def full_game():
-    global question_set
-    global answers_this_round
+
     how_many = int(request.form.get("how_many"))
     keywords = request.form.getlist("keywords")
     include_own= request.form.get("include_own")
     include_answered= request.form.get("include_answered")
     fill_with_random = request.form.get("fill_with_random")
     
-    question_set= questions.get_new_question_set(how_many, keywords, include_own, include_answered, fill_with_random )
-    print (question_set)
-    answers_this_round = []
+    questions.get_new_question_set(how_many, keywords, include_own, include_answered, fill_with_random )
+    print("ROUTES", session["question_set"])
     return redirect("game/0")
 
 @app.route("/game/<int:id>")
 def one_question(id):
-    global question_set
-    if id >= len(question_set):
+    if id >= len(session.get("question_set")):
         return redirect("/results")
     id +=1
-    print ("id", id)
-    print("next q", question_set[id-1])
-    return render_template("game.html", id=id, question=question_set[id-1])    
+    #print ("id", id)
+    return render_template("game.html", id=id)    
 
 @app.route("/results")
 def results():
-    global question_set
-    global answers_this_round
     user_score = questions.get_user_score()
     position = questions.get_user_position()
-    return render_template("results.html", question_set =question_set, answers_this_round = answers_this_round, user_score = user_score, position = position )
+    return render_template("results.html",  user_score = user_score, position = position )
     
 @app.route("/answer", methods=["POST"])
 def answered_question():
     users.check_csrf()
-    global answers_this_round
     id = request.form.get("id")
-    question_id = request.form.get("question_id")
+    question_id = session["question_set"][id]["id"]
     answer = int(request.form.get("answer"))
-    correct_or_not =  answer == int(request.form.get("correct_answer"))
+    correct_or_not =  answer == int(session["question_set"][id]["answer"])
     if questions.question_answered(question_id, correct_or_not):
-        answers_this_round.append((question_id, answer, correct_or_not, 1))
+        print("session_win")
+        session["question_set"][id]["player_answer"] = answer
+        session["question_set"][id]["new_question"] = True
     else:
-        answers_this_round.append((question_id, answer, correct_or_not, 0))
+        print("session_fail")
+        session["question_set"][id]["player_answer"] = answer
+        session["question_set"][id]["new_question"] = False
     return redirect(f"/game/{id}")
 
 @app.route("/highscores")

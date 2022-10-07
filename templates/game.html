@@ -1,23 +1,22 @@
-{%extends "layout.html"%} {% block content %} {% if question %}
+{%extends "layout.html"%} {% block content %}
 <hr />
-kysymys {{id}}: {{question[1]}}<br />
+kysymys {{id}}: {{session.question_set[id|string]["question"]}}<br />
 <hr />
 <form action="/answer" method="post">
-  A) {{question[2]}}
+  A) {{session.question_set[id|string]["choice1"]}}
   <input type="radio" id="answer" name="answer" value="1" checked="checked" />
   <br />
-  B) {{question[3]}}
+  B) {{session.question_set[id|string]["choice2"]}}
   <input type="radio" id="answer" name="answer" value="2" /> <br />
-  C) {{question[4]}} <input type="radio" id="answer" name="answer" value="3" />
+  C) {{session.question_set[id|string]["choice3"]}}
+  <input type="radio" id="answer" name="answer" value="3" />
   <br />
-  D) {{question[5]}}
+  D) {{session.question_set[id|string]["choice4"]}}
   <input type="radio" id="answer" name="answer" value="4" />
   <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
-  <input type="hidden" name="correct_answer" value="{{question[6]}}" />
   <input type="hidden" name="id" value="{{id}}" />
-  <input type="hidden" name="question_id" value="{{ question[0] }}" />
 
   <input type="submit" value="Lukitse vastaus" />
 </form>
 <hr />
-{%endif%} {%endblock%}
+{%endblock%}

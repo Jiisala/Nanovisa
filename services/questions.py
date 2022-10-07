@@ -8,30 +8,45 @@ from random import shuffle
 #I'm fairly certain that there is a more elegant way of doing many things here, but this should work
 
 def get_new_question_set(how_many, keywords, include_own, include_answered, fill_with_random ):
-    print("alku", keywords)
     user_id = session.get("user_id")
     if include_own and include_answered:
-        print("eka")
+       # print("eka")
         questions = get_questions_include_own_and_answered(keywords)
     elif include_own:
-        print("toka")
+       # print("toka")
         questions = get_questions_include_own(keywords, user_id)
     elif include_answered:
-        print("kolmas")
+       # print("kolmas")
         questions = get_questions_include_answered(keywords, user_id)
     else:
-        print("neljäs")
+       # print("neljäs")
         questions = get_questions_with_all_constrains(keywords, user_id)   
     
     if fill_with_random:
         if len(questions) < how_many:
+            print("sending", questions)
             questions = fill_with_rest_with_random(questions, how_many)
             
             
-    for question in questions:
-        print (question)
     shuffle(questions)
-    return questions[:how_many]
+    one_question = {}
+    for i in range (1, len(questions)):
+        one_question[i] = {
+            "id":questions[i-1][0],
+            "question": questions[i-1][1],
+            "choice1": questions[i-1][2],
+            "choice2": questions[i-1][3],
+            "choice3": questions[i-1][4],
+            "choice4": questions[i-1][5],
+            "answer": questions[i-1][6],
+            "keyword1": questions[i-1][7],
+            "keyword2": questions[i-1][8],
+            "keyword3": questions[i-1][9],
+            "keyword4": questions[i-1][10],
+            "user_id": questions[i-1][11]} 
+    session["question_set"] = one_question        
+    print("toimiikohan", session["question_set"])                   
+    return True
 
 def get_questions_with_all_constrains(keywords, user_id):
     if all(a == '' for a in keywords):
@@ -211,15 +226,18 @@ def fill_with_rest_with_random(questions, how_many):
     filtered_questions = list(filterer)
     
     shuffle(filtered_questions)
-    print("filt", filtered_questions)
+   # print("filt", filtered_questions)
     missing = how_many-len(questions)
-    print ("missing", missing)
+   # print ("missing", missing)
     if len(filtered_questions) < missing:
+        
+        for q in filtered_questions:
+            questions.append(q)
         return questions
     for i in range(missing):
         questions.append(filtered_questions[i])
         print(i)
-    print("quest", questions)
+   # print("quest", questions)
     return questions
 
 def get_all_questions():

@@ -1,8 +1,10 @@
-{%extends "layout.html"%} {% block content %} {% set score =[] %} {%if
-answers_this_round | length > 0 %} {% for i in range(question_set | length) %}{%
-if answers_this_round[i][3] == 1 and question_set[i][11] != session.user_id and
-answers_this_round[i][2] == 1 %} {%set _ = score.append(1)%}
-{%endif%}{%endfor%}Sait tästä pelistä {{score | length}} pistettä<br />
+{%extends "layout.html"%} {% block content %} {% set score =[] %} {% for i in
+range(1, session.question_set.items() | length +1) %} {%if
+session.question_set[i|string]["new_question"] and
+session.question_set[i|string]["user_id"] != session.user_id and
+session.question_set[i|string]["answer"] ==
+session.question_set[i|string]["player_answer"] %} {%set _ = score.append(1)%}
+{%endif%} {%endfor%} Sait tästä pelistä {{score | length}} pistettä<br />
 {% if user_score | length > 0 %} Yhteispisteesi ovat: {{user_score[0]}}<br />
 {%endif%} {% if position | length > 0 %} Olet ranking listan sijalla:
 {{position[0] +1}} {%endif%}
@@ -10,20 +12,21 @@ answers_this_round[i][2] == 1 %} {%set _ = score.append(1)%}
   <br />
   Tämän kierroksen kysymykset:
   <br />
-  {% for i in range (question_set | length) %} {% set correct_answer =
-  question_set[i][6] %}
+  {% for i in range (1, session.question_set.items() | length +1) %}
   <div>
-    {{i +1}}: {{question_set[i][1]}}<br />
-    vastasit: {{ question_set[i][answers_this_round[i][1]+1] }}<br />
-    oikea vastaus oli: {{question_set[ i ][question_set[i][6]+1]}}<br />
-    {% if answers_this_round[i][3] == 0 %} Koska olit vastannut samaan
-    kysymykseen aiemmin, et voi saada tästä pisteitä. {%elif question_set[i][11]
-    == session.user_id %} Koska tämä oli itse lisäämäsi kysymys, et voi saada
-    tästä pistettä {% else %} Sait tästä kysymyksestä {{answers_this_round[i][2]
-    *1}} pistettä {% endif %}
+    {{i +1}}: {{session.question_set[i|string]["question"]}}<br />
+    vastasit: {{ session.question_set[i|string]["player_answer"] }}<br />
+    oikea vastaus oli: {{session.question_set[i|string]["answer"]}}<br />
+
+    {% if not session.question_set[i|string]["new_question"] %} Koska olit
+    vastannut samaan kysymykseen aiemmin, et voi saada tästä pisteitä. {%elif
+    session.question_set[i|string]["user_id"] == session.user_id %} Koska tämä
+    oli itse lisäämäsi kysymys, et voi saada tästä pistettä {% else %} Sait
+    tästä kysymyksestä {{session.question_set[i|string]["player_answer"] *1}}
+    pistettä {% endif %}
   </div>
 
   <br />
   {%endfor%}
 </div>
-{%endif%} {%endblock%}
+{%endblock%}
