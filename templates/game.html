@@ -1,4 +1,4 @@
-{%extends "layout.html"%} {% block content %}
+{%extends "layout.html"%} {% block content %} {% if question %}
 <hr />
 kysymys {{id}}: {{question[1]}}<br />
 <hr />
@@ -20,5 +20,4 @@ kysymys {{id}}: {{question[1]}}<br />
   <input type="submit" value="Lukitse vastaus" />
 </form>
 <hr />
-
-{%endblock%}
+{%endif%} {%endblock%}
