@@ -3,9 +3,9 @@ range(question_set | length) %}{% if answers_this_round[i][3] == 1 and
 question_set[i][11] != session.user_id and answers_this_round[i][2] == 1 %}
 {%set _ = score.append(1)%} {%endif%}{%endfor%}Sait tästä pelistä {{score |
 length}} pistettä<br />
-Yhteispisteesi ovat: {{user_score[0]}}<br />
-Olet ranking listan sijalla: {{position[0] +1}}
-
+{% if user_score | length > 0 %} Yhteispisteesi ovat: {{user_score[0]}}<br />
+{%endif%} {% if position | length > 0 %} Olet ranking listan sijalla:
+{{position[0] +1}} {%endif%}
 <div>
   <br />
   Tämän kierroksen kysymykset:
