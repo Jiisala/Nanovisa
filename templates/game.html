@@ -1,6 +1,7 @@
 {%extends "layout.html"%} {% block content %}
 <hr />
-kysymys {{id}}: {{session.question_set[id|string]["question"]}}<br />
+kysymys {{id}}/ {{session.question_set.items() | length}}:
+{{session.question_set[id|string]["question"]}}<br />
 <hr />
 <form action="/answer" method="post">
   A) {{session.question_set[id|string]["choice1"]}}
@@ -13,7 +14,7 @@ kysymys {{id}}: {{session.question_set[id|string]["question"]}}<br />
   <br />
   D) {{session.question_set[id|string]["choice4"]}}
   <input type="radio" id="answer" name="answer" value="4" />
-  <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
+  <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
   <input type="hidden" name="id" value="{{id}}" />
 
   <input type="submit" value="Lukitse vastaus" />

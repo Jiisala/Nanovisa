@@ -10,27 +10,24 @@ from random import shuffle
 def get_new_question_set(how_many, keywords, include_own, include_answered, fill_with_random ):
     user_id = session.get("user_id")
     if include_own and include_answered:
-       # print("eka")
         questions = get_questions_include_own_and_answered(keywords)
     elif include_own:
-       # print("toka")
         questions = get_questions_include_own(keywords, user_id)
     elif include_answered:
-       # print("kolmas")
         questions = get_questions_include_answered(keywords, user_id)
     else:
-       # print("neljäs")
         questions = get_questions_with_all_constrains(keywords, user_id)   
     
     if fill_with_random:
         if len(questions) < how_many:
-            print("sending", questions)
             questions = fill_with_rest_with_random(questions, how_many)
             
             
     shuffle(questions)
+    if how_many > len(questions):
+        how_many = len(questions)
     one_question = {}
-    for i in range (1, len(questions)):
+    for i in range (1, how_many +1):
         one_question[i] = {
             "id":questions[i-1][0],
             "question": questions[i-1][1],
@@ -64,7 +61,6 @@ def get_questions_with_all_constrains(keywords, user_id):
             result = db.session.execute(sql,{"user_id":user_id, "keywords0":keywords[0], "keywords1":keywords[1],"keywords2":keywords[2],"keywords3":keywords[3]})
             questions = result.fetchall()
         except:
-            print("fails, allconst")
             return False
                 
     else:
@@ -92,7 +88,6 @@ def get_questions_with_all_constrains(keywords, user_id):
             result = db.session.execute(sql,{"user_id":user_id, "keywords0":keywords[0], "keywords1":keywords[1],"keywords2":keywords[2],"keywords3":keywords[3]})
             questions = result.fetchall()
         except:
-            print("fails, allconst")
             return False
     return questions    
 
@@ -137,7 +132,6 @@ def get_questions_include_own(keywords, user_id):
             result = db.session.execute(sql,{"user_id":user_id, "keywords0":keywords[0], "keywords1":keywords[1],"keywords2":keywords[2],"keywords3":keywords[3]})
             questions = result.fetchall()
         except:
-            print("fails, includeown")
             return False
     return questions
 
@@ -226,23 +220,23 @@ def fill_with_rest_with_random(questions, how_many):
     filtered_questions = list(filterer)
     
     shuffle(filtered_questions)
-   # print("filt", filtered_questions)
     missing = how_many-len(questions)
-   # print ("missing", missing)
     if len(filtered_questions) < missing:
         
         for q in filtered_questions:
             questions.append(q)
+          
         return questions
     for i in range(missing):
         questions.append(filtered_questions[i])
-        print(i)
-   # print("quest", questions)
     return questions
 
 def get_all_questions():
     
-    sql = "SELECT * FROM questions"
+    sql = """SELECT * FROM questions AS Q
+            LEFT JOIN flagged_questions AS F 
+            on Q.id = F.question_id 
+            WHERE F.question_id IS NULL"""
     result = db.session.execute(sql)
     questions = result.fetchall()
     return questions
@@ -287,6 +281,7 @@ def count_highscore():
     except:
         return False
     return highscores
+
 def get_user_score():
     user_id = session.get("user_id")
     try:
@@ -314,8 +309,17 @@ def get_all_keywords():
     except:
         return False
     suggestions =[word for word in all_keywords for word in word]
-    suggestions = list(dict.fromkeys(suggestions))
-    #print (suggestions)
-    ##for subset in all_keywords:
-    ##    suggestions += subset[0][1:-1].split(",")    
+    suggestions = list(dict.fromkeys(suggestions)) 
     return suggestions
+
+def flag_question(id, reason):
+    user_id = session.get("user_id")
+    question_id = session["question_set"][id]["id"]
+    try:
+        sql="""INSERT INTO flagged_questions (question_id, flagger_id, reason)
+            VALUES(:question_id, :user_id, :reason)"""
+        db.session.execute(sql, {"question_id":question_id, "user_id":user_id, "reason":reason})
+        db.session.commit()
+    except:
+        return False
+    return True

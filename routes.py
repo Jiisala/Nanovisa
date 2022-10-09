@@ -54,7 +54,6 @@ def new_question():
         
         return render_template("newquestion.html", suggestions = suggestions)
     if request.method == "POST":
-        users.check_csrf()
         
         question =request.form["question"]
         answer = request.form["answer"]
@@ -86,6 +85,8 @@ def full_game():
 
 @app.route("/game/<int:id>")
 def one_question(id):
+    if not users.check_logged():
+        return render_template("login.html")
     if id >= len(session.get("question_set")):
         return redirect("/results")
     id +=1
@@ -94,29 +95,45 @@ def one_question(id):
 
 @app.route("/results")
 def results():
+    if not users.check_logged():
+        return render_template("login.html")
     user_score = questions.get_user_score()
     position = questions.get_user_position()
     return render_template("results.html",  user_score = user_score, position = position )
     
 @app.route("/answer", methods=["POST"])
 def answered_question():
-    users.check_csrf()
     id = request.form.get("id")
     question_id = session["question_set"][id]["id"]
     answer = int(request.form.get("answer"))
     correct_or_not =  answer == int(session["question_set"][id]["answer"])
     if questions.question_answered(question_id, correct_or_not):
-        print("session_win")
         session["question_set"][id]["player_answer"] = answer
         session["question_set"][id]["new_question"] = True
     else:
-        print("session_fail")
         session["question_set"][id]["player_answer"] = answer
         session["question_set"][id]["new_question"] = False
     return redirect(f"/game/{id}")
 
 @app.route("/highscores")
 def highscores():
+    if not users.check_logged():
+        return render_template("login.html")
     highscorelist = questions.count_highscore()
-    print(highscorelist)
     return render_template("highscores.html", highscorelist = highscorelist)
+
+@app.route("/flag_question", methods=["POST"])
+def tag_question():
+    id = request.form.get("id")
+    return render_template("flag.html", id = id)
+
+@app.route("/confirm_flag", methods=["POST"])
+def confirm_tag():
+    print(request.form)
+    id = request.form.get("id")
+    reason = request.form.get("reason")
+    try:
+        questions.flag_question(id, reason)
+    except:
+        print("error handling goes here")
+    return render_template("results.html")

@@ -1,0 +1,20 @@
+{%extends "layout.html"%} {% block content %}
+<div>
+    {{id}}
+    Olet esittämässä vastalauseen kysymykselle:  {{session.question_set[id|string]["question"]}}<br />
+    vastauksesi: {{ session.question_set[id|string]["player_answer"] }}<br />
+    Kysymykselle määritelty oikea vastaus oli: {{session.question_set[id|string]["answer"]}}<br />
+    
+    Kun olet painanut vahvista-nappia kysymys lähetetään ylläpitäjille tarkistettavaksi. Tarkistuksen ajaksi kysymys poistetaan pelistä.
+    Ole ystävällinen ja anna tiivis sanallinen selvitys siitä miksi ilmoitit kysymyksen."
+    <form action="/confirm_flag" method="post" id="tag_form">
+        <textarea form="tag_form" id="reason" name="reason" rows="5", cols="50"
+        placeholder='"Esim. vastaus on väärin, oikea vastaus on...", "tai mielestäni kysymys on hyvän tavan vastainen koska..."'></textarea> 
+         
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+        <input type="hidden" name="id" value="{{id}}" />
+        <input type="submit" value="vahvista" />
+
+</div>
+
+{% endblock %}

@@ -14,7 +14,7 @@ session.question_set[i|string]["player_answer"] %} {%set _ = score.append(1)%}
   <br />
   {% for i in range (1, session.question_set.items() | length +1) %}
   <div>
-    {{i +1}}: {{session.question_set[i|string]["question"]}}<br />
+    {{i}}: {{session.question_set[i|string]["question"]}}<br />
     vastasit: {{ session.question_set[i|string]["player_answer"] }}<br />
     oikea vastaus oli: {{session.question_set[i|string]["answer"]}}<br />
 
@@ -25,6 +25,12 @@ session.question_set[i|string]["player_answer"] %} {%set _ = score.append(1)%}
     tästä kysymyksestä {{session.question_set[i|string]["player_answer"] *1}}
     pistettä {% endif %}
   </div>
+  <form action="/flag_question" method="POST">
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+    <input type="hidden" name="id" value="{{i}}" />
+
+    <input type="submit" value="VASTALAUSE!" />
+  </form>
 
   <br />
   {%endfor%}
