@@ -103,15 +103,16 @@ def results():
 @app.route("/answer", methods=["POST"])
 def answered_question():
     id = request.form.get("id")
-    question_id = session["question_set"][id]["id"]
+    question_id = session["question_set"][int(id)]["id"]
     answer = int(request.form.get("answer"))
-    correct_or_not =  answer == int(session["question_set"][id]["answer"])
+    correct_or_not =  answer == int(session["question_set"][int(id)]["answer"])
     if questions.question_answered(question_id, correct_or_not):
-        session["question_set"][id]["player_answer"] = answer
-        session["question_set"][id]["new_question"] = True
+        session["question_set"][int(id)]["player_answer"] = answer
+        session["question_set"][int(id)]["new_question"] = True
     else:
-        session["question_set"][id]["player_answer"] = answer
-        session["question_set"][id]["new_question"] = False
+        session["question_set"][int(id)]["player_answer"] = answer
+        session["question_set"][int(id)]["new_question"] = False
+      
     return redirect(f"/game/{id}")
 
 @app.route("/highscores")

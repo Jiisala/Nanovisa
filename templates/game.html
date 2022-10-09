@@ -1,18 +1,18 @@
 {% extends "layout.html" %} {% block content %}
 <hr />
-kysymys {{ id }}/ {{ session.question_set.items() | length }}:
-{{ session.question_set[id|string]["question"] }}<br />
+kysymys {{ id }}/ {{ session.question_set.items() | length }}: {{
+session.question_set[id]["question"] }}<br />
 <hr />
 <form action="/answer" method="post">
-  A) {{ session.question_set[id|string]["choice1"] }}
+  A) {{ session.question_set[id]["choice1"] }}
   <input type="radio" id="answer" name="answer" value="1" checked="checked" />
   <br />
-  B) {{ session.question_set[id|string]["choice2"] }}
+  B) {{ session.question_set[id]["choice2"] }}
   <input type="radio" id="answer" name="answer" value="2" /> <br />
-  C) {{ session.question_set[id|string]["choice3"] }}
+  C) {{ session.question_set[id]["choice3"] }}
   <input type="radio" id="answer" name="answer" value="3" />
   <br />
-  D) {{ session.question_set[id|string]["choice4"] }}
+  D) {{ session.question_set[id]["choice4"] }}
   <input type="radio" id="answer" name="answer" value="4" />
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   <input type="hidden" name="id" value="{{ id }}" />
