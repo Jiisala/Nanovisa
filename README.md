@@ -9,11 +9,12 @@ Tämän hetkinen tila:
 
 Projektin toiminnallisuus on toteutettu suurimmaksi osaksi, ulkoasun siistimistä ei ole vielä edes aloitettu
 
-- Käyttäjän lisääminen ja sisäsisäänkirjautuminenänkirjautuminen toimivat. Ne noudattelevat esimerkkisovelluksen logiikkaa, mutta oletan ettei ole tarkoitus keksiä pyörää uudestaan.
+- Käyttäjän lisääminen ja sisäsisäänkirjautuminen toimivat. Ne noudattelevat esimerkkisovelluksen logiikkaa, mutta oletan ettei ole tarkoitus keksiä pyörää uudestaan.
 - Kysymyksiä voi lisätä.
 - Kysymys-settejä voi muodostaa ja niihin voi vastata.
 - Pistelasku toimii melkein, bugi jonka olen jo yksilöinyt vaivaa vielä.
   (yritin tallettaa session dataan liikaa tietoa, ratkaisuksi ajattelin server side sessiota, mutta sen toteuttaminen jää myöhemmäksi).
+- Highscore lista toimii
 - kysymyksiä voi ilmiantaa ylläpidolle tarkistettaviksi
 - ylläpitäjä voi tarkistaa kysymyksiä ja poistaa niitä.
 
