@@ -51,7 +51,7 @@
     {%endfor%}
   </p>
   <p>
-    <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
     <input type="submit" value="Lisää" />
   </p>
 </form>

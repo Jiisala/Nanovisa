@@ -27,7 +27,7 @@
   Sisällytä omat<input type="checkbox" id="include_own" name="include_own"><br/>
   Sisällytä jo kerran vastatut<input type="checkbox" id="include_answered" name="include_answered"><br/>
   Täytä satunnaisilla? <input type="checkbox" id="fill_with_random" name="fill_with_random"><br/>
-  <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
+  <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
   <input type="submit" value="Aloita peli" />
 
 

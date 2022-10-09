@@ -12,7 +12,6 @@ def login(name, password):
         return False
     if not check_password_hash(user.password, password):
         return False
-    session["csrf_token"]= secrets.token_hex(16)
     session["user_id"] = user.id
     session["user_name"] = user.name
     session["admin"] = user.admin
@@ -65,6 +64,3 @@ def banUser(id):
     #placeholder for future use
     pass
 
-def check_csrf():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
