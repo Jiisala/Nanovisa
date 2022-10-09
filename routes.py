@@ -13,6 +13,7 @@ def index():
     if not users.check_logged():
         return render_template("login.html")
     suggestions = questions.get_all_keywords()
+    print(suggestions)
     return render_template("index.html", suggestions = suggestions) 
 
 @app.route("/login", methods=["GET", "POST"])

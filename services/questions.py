@@ -343,9 +343,7 @@ def remove_flag(question_id):
         db.session.execute(sql, {"question_id":question_id})
         db.session.commit()
     except:
-        print("pöng")
         return False
-    print("peng")
     return True
 
 def remove_question(question_id):
