@@ -10,15 +10,18 @@ Herokuun on luotu testi käyttäjä, sekä testi admin. Voit toki myös luoda om
 
 Tämän hetkinen tila:
 
-Projektin toiminnallisuus on toteutettu suurimmaksi osaksi, ulkoasun siistimistä ei ole vielä edes aloitettu
+Projektin toiminnallisuus on toteutettu suurimmaksi osaksi, ulkoasun siistimistä ei ole vielä edes aloitettu.
+
 
 - Käyttäjän lisääminen ja sisäsisäänkirjautuminen toimivat. Ne noudattelevat esimerkkisovelluksen logiikkaa, mutta oletan ettei ole tarkoitus keksiä pyörää uudestaan.
 - Kysymyksiä voi lisätä.
+- kysymyksiä lisätessä ja kysymys-settejä luodessa, ohjelma antaa ehdotuksia avainsana kenttiin kun alat kirjoittamaan. Nämä perustuvat tietokantaan jo lisättyihin avainsanoihin.
 - Kysymys-settejä voi muodostaa ja niihin voi vastata.
 - Pistelasku toimii melkein, bugi jonka olen jo yksilöinyt vaivaa vielä Herokussa olevaa versiota. Yritin tallettaa liikaa dataa session dataan ja osa ei tallennu. Otin käyttöön Flask-sessions paketin, joka korjasi ongelman omalla koneellani. En uskaltanut viime hetkellä ladata herokuun uutta versiota, sillä en ollut varma että se toimii myös siellä.
 - Highscore lista toimii
 - kysymyksiä voi ilmiantaa ylläpidolle tarkistettaviksi
 - ylläpitäjä voi tarkistaa kysymyksiä ja poistaa niitä.
+
 
 Seuraavat askeleet:
 
