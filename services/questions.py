@@ -309,7 +309,7 @@ def get_all_keywords():
         result = db.session.execute(sql)
         all_keywords = result.fetchall()
     except:
-        return False
+        return []
     suggestions =[word for word in all_keywords for word in word]
     suggestions = list(dict.fromkeys(suggestions)) 
     return suggestions
