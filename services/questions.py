@@ -1,3 +1,4 @@
+from concurrent.futures.process import _ThreadWakeup, _threads_wakeups
 from db import db
 from flask import session
 from random import shuffle
@@ -21,14 +22,15 @@ def get_new_question_set(how_many, keywords, include_own, include_answered, fill
     if fill_with_random:
         if len(questions) < how_many:
             questions = fill_with_rest_with_random(questions, how_many)
-            
-            
+                
     shuffle(questions)
+
     if how_many > len(questions):
         how_many = len(questions)
-    one_question = {}
+
+    question_set = {}
     for i in range (1, how_many +1):
-        one_question[i] = {
+        question_set[i] = {
             "id":questions[i-1][0],
             "question": questions[i-1][1],
             "choice1": questions[i-1][2],
@@ -41,9 +43,9 @@ def get_new_question_set(how_many, keywords, include_own, include_answered, fill
             "keyword3": questions[i-1][9],
             "keyword4": questions[i-1][10],
             "user_id": questions[i-1][11]} 
-    session["question_set"] = one_question        
-    print("toimiikohan", session["question_set"])                   
-    return True
+
+    session["question_set"] = question_set        
+                   
 
 def get_questions_with_all_constrains(keywords, user_id):
     if all(a == '' for a in keywords):
@@ -319,6 +321,37 @@ def flag_question(id, reason):
         sql="""INSERT INTO flagged_questions (question_id, flagger_id, reason)
             VALUES(:question_id, :user_id, :reason)"""
         db.session.execute(sql, {"question_id":question_id, "user_id":user_id, "reason":reason})
+        db.session.commit()
+    except:
+        return False
+    return True
+
+def get_flagged_questions():
+    try:
+        sql="""SELECT a.*, b.flagger_id, b.reason FROM questions AS a 
+        JOIN flagged_questions AS b
+        ON a.id = b.question_id"""
+        result = db.session.execute(sql)
+        flagged_questions = result.fetchall()
+    except:
+        return False
+    return flagged_questions
+
+def remove_flag(question_id):
+    try:
+        sql = """DELETE FROM flagged_questions WHERE question_id = :question_id"""
+        db.session.execute(sql, {"question_id":question_id})
+        db.session.commit()
+    except:
+        print("pöng")
+        return False
+    print("peng")
+    return True
+
+def remove_question(question_id):
+    try:
+        sql = """DELETE FROM questions WHERE id = :question_id"""
+        db.session.execute(sql, {"question_id":question_id})
         db.session.commit()
     except:
         return False

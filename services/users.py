@@ -14,13 +14,11 @@ def login(name, password):
         return False
     session["user_id"] = user.id
     session["user_name"] = user.name
-    session["admin"] = user.admin
     return True
 
 def logout():
     del session["user_id"]
     del session["user_name"]
-    del session["admin"]
     del session["csrf_token"]      
 
 def check_logged():
@@ -40,9 +38,16 @@ def new_user(name, password, admin=False):
         return False
     return login(name, password)  
 
-def check_adminRights():
-    return session.get("admin") 
-
+def check_admin_rights():
+    user_id = session.get("user_id")
+    try:
+        sql = "SELECT admin FROM users WHERE id=:user_id"
+        result = db.session.execute(sql, {"user_id":user_id})
+        is_admin = result.fetchone()
+    except:
+        return False
+        
+    return is_admin[0]
 def toggleAdmin(id):
     #This is made for future use and is completely untested
     #Admin stuff is yet to be implemented

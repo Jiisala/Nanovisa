@@ -4,13 +4,15 @@ from flask import redirect, render_template, request
 from services import users
 from services import questions
 
+@app.context_processor
+def context_processor():
+    return dict(is_admin =users.check_admin_rights)
 
 @app.route("/")
 def index():
     if not users.check_logged():
         return render_template("login.html")
     suggestions = questions.get_all_keywords()
-    
     return render_template("index.html", suggestions = suggestions) 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -80,7 +82,6 @@ def full_game():
     fill_with_random = request.form.get("fill_with_random")
     
     questions.get_new_question_set(how_many, keywords, include_own, include_answered, fill_with_random )
-    print("ROUTES", session["question_set"])
     return redirect("game/0")
 
 @app.route("/game/<int:id>")
@@ -90,7 +91,6 @@ def one_question(id):
     if id >= len(session.get("question_set")):
         return redirect("/results")
     id +=1
-    #print ("id", id)
     return render_template("game.html", id=id)    
 
 @app.route("/results")
@@ -137,3 +137,23 @@ def confirm_tag():
     except:
         print("error handling goes here")
     return render_template("results.html")
+
+@app.route("/admin")
+def admin():
+    if users.check_admin_rights():
+        flagged_questions = questions.get_flagged_questions()
+        return render_template("admin.html", flagged_questions= flagged_questions)
+    return redirect("/")
+
+@app.route("/deal_with_flagged_question", methods=["POST"])
+def deald_with_flagged_questions():
+    action = request.form.get("deal_with_flag").split(" ")
+
+    if users.check_admin_rights():
+        if action[0] == "remove_flag":
+            questions.remove_flag(int(action[1]))
+        if action[0] == "remove_question":
+            questions.remove_question(int(action[1]))
+        if action[0] == "update_question":
+            pass    
+    return redirect("/admin")
