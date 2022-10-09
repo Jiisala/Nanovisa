@@ -12,8 +12,7 @@ Projektin toiminnallisuus on toteutettu suurimmaksi osaksi, ulkoasun siistimist�
 - Käyttäjän lisääminen ja sisäsisäänkirjautuminen toimivat. Ne noudattelevat esimerkkisovelluksen logiikkaa, mutta oletan ettei ole tarkoitus keksiä pyörää uudestaan.
 - Kysymyksiä voi lisätä.
 - Kysymys-settejä voi muodostaa ja niihin voi vastata.
-- Pistelasku toimii melkein, bugi jonka olen jo yksilöinyt vaivaa vielä.
-  (yritin tallettaa session dataan liikaa tietoa, ratkaisuksi ajattelin server side sessiota, mutta sen toteuttaminen jää myöhemmäksi).
+- Pistelasku toimii melkein, bugi jonka olen jo yksilöinyt vaivaa vielä Herokussa olevaa versiota. Yritin tallettaa liikaa dataa session dataan ja osa ei tallennu. Otin käyttöön Flask-sessions paketin, joka korjasi ongelman omalla koneellani. En uskaltanut viime hetkellä ladata herokuun uutta versiota, sillä en ollut varma että se toimii myös siellä.
 - Highscore lista toimii
 - kysymyksiä voi ilmiantaa ylläpidolle tarkistettaviksi
 - ylläpitäjä voi tarkistaa kysymyksiä ja poistaa niitä.
