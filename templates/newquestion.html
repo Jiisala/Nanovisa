@@ -1,6 +1,6 @@
-{%extends "layout.html"%} {% block content %}
+{% extends "layout.html" %} {% block content %}
 <h2>Lisää uusi kysymys</h2>
-{% for message in get_flashed_messages(category_filter=["message success"])%}
+{% for message in get_flashed_messages(category_filter=["message success"]) %}
 <div class="message_success">{{ message }}</div>
 {% endfor %}
 
@@ -15,9 +15,9 @@
   ></textarea>
   <p>
     Vastausvaihtoehdot: <br />
-    {%for a in ["A","B","C","D"]%} {{a}}:
-    <input type="text" id="choice" name="choice" required /> <br />
-    {%endfor%}
+    {% for a in ["A","B","C","D"] %} 
+    {{ a }}: <input type="text" id="choice" name="choice" required /> <br />
+    {% endfor %}
   </p>
   <label for="answer">Valitse oikea vastaus</label>
   <p>
@@ -31,10 +31,10 @@
   <label for="keywords">Lisää vähintään yksi avainsana</label>
 
   <p>
-    {%for a in range(4)%} {% if a == 0%} {{a+1}}.
+    {% for a in range(4) %} {% if a == 0 %} {{ a+1 }}.
     <input type="text" id="keywords0" name="keywords0" required /> {% else %}
-    {{a+1}}. <input type="text" id="keywords{{a}}" name="keywords_rest" />
-    {%endif%}
+    {{ a+1 }}. <input type="text" id="keywords{{ a }}" name="keywords_rest" />
+    {% endif %}
     <script>
       $(function () {
         autocomplete = [
@@ -48,11 +48,11 @@
       })
     </script>
     <br />
-    {%endfor%}
+    {% endfor %}
   </p>
   <p>
-    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
     <input type="submit" value="Lisää" />
   </p>
 </form>
-{%endblock%}
+{% endblock %}

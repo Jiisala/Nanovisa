@@ -35,21 +35,13 @@ CREATE TABLE flagged_questions (
     flagger_id INTEGER REFERENCES users,
     reason TEXT
 );
---For highscores, also used to calculate the relative hardesss of the question
+
 CREATE TABLE answers_given (
     id SERIAL PRIMARY KEY,
     question_id INTEGER REFERENCES questions ON DELETE CASCADE, 
     user_id INTEGER REFERENCES users ON DELETE CASCADE, 
     correct BOOLEAN,
     UNIQUE(question_id, user_id)
-);
---Collects together the questions added by each user
---Mainly used for convinience when needed 
---On further thought on the subject might be totally useless and get deleted soon
-CREATE TABLE users_x_questions (
-    id SERIAL PRIMARY KEY, 
-    question_id INTEGER REFERENCES questions ON DELETE CASCADE, 
-    user_id INTEGER REFERENCES users ON DELETE CASCADE 
 );
 
 CREATE TABLE messages (

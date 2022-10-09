@@ -1,5 +1,5 @@
 from app import app
-from flask import Flask, flash, session
+from flask import flash, session
 from flask import redirect, render_template, request
 from services import users
 from services import questions
@@ -13,7 +13,6 @@ def index():
     if not users.check_logged():
         return render_template("login.html")
     suggestions = questions.get_all_keywords()
-    print(suggestions)
     return render_template("index.html", suggestions = suggestions) 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -46,7 +45,6 @@ def login_user():
     
     return redirect("/")
 
-#TODO muista tutkia miten lomakkeen saisi säilyttämään tiedot jos jotain menee pieleen
 @app.route("/newquestion", methods=["GET", "POST"])
 def new_question():
     
@@ -130,13 +128,12 @@ def tag_question():
 
 @app.route("/confirm_flag", methods=["POST"])
 def confirm_tag():
-    print(request.form)
     id = request.form.get("id")
     reason = request.form.get("reason")
     try:
         questions.flag_question(id, reason)
     except:
-        print("error handling goes here")
+        print("error handling goes here, when I get around adding it")
     return render_template("results.html")
 
 @app.route("/admin")
@@ -156,5 +153,6 @@ def deald_with_flagged_questions():
         if action[0] == "remove_question":
             questions.remove_question(int(action[1]))
         if action[0] == "update_question":
+            #Not done yet
             pass    
     return redirect("/admin")

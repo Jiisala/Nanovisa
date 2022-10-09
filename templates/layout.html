@@ -15,7 +15,8 @@
 
 <body>
   <h1>NANOVISA</h1>
-  {% if session.user_id %} Olet kirjautunut käyttäjänimellä: {{session.user_name
-  }} {% endif %} {% include "navigation.html" %} {% block content %}{% endblock
-  %}
+  {% if session.user_id %} 
+    Olet kirjautunut käyttäjänimellä: {{ session.user_name }} 
+  {% endif %} 
+  {% include "navigation.html" %} {% block content %}{% endblock %}
 </body>

@@ -1,23 +1,23 @@
-{%extends "layout.html"%} {% block content %}
+{% extends "layout.html" %} {% block content %}
 <div>
   <h3>Käyttäjien ilmiantamat kysymykset</h3>
   {% for question in flagged_questions %}
   <div>
-    ID: {{question[0]}} <br />
-    Kysymys: {{question[1]}} <br />
-    Vaihtoehto 1: {{question[2]}} <br />
-    Vaihtoehto 2: {{question[3]}} <br />
-    Vaihtoehto 3: {{question[4]}} <br />
-    Vaihtoehto 4: {{question[5]}} <br />
-    Vastaus: {{question[6]}} <br />
-    Avainsana 1: {{question[7]}} <br />
-    Avainsana 2: {{question[8]}} <br />
-    Avainsana 3: {{question[9]}} <br />
-    Avainsana 4: {{question[10]}} <br />
-    Lisääjä: {{question[11]}} <br />
+    ID: {{ question[0] }} <br />
+    Kysymys: {{ question[1] }} <br />
+    Vaihtoehto 1: {{ question[2] }} <br />
+    Vaihtoehto 2: {{ question[3] }} <br />
+    Vaihtoehto 3: {{ question[4] }} <br />
+    Vaihtoehto 4: {{ question[5] }} <br />
+    Vastaus: {{ question[6] }} <br />
+    Avainsana 1: {{ question[7] }} <br />
+    Avainsana 2: {{ question[8] }} <br />
+    Avainsana 3: {{ question[9] }} <br />
+    Avainsana 4: {{ question[10] }} <br />
+    Lisääjä: {{ question[11] }} <br />
     <br />
-    Ilmiantaja: {{question[12]}} <br />
-    Perustelu: {{question[13]}} <br />
+    Ilmiantaja: {{ question[12] }} <br />
+    Perustelu: {{ question[13] }} <br />
     <br />
   </div>
   <form action="/deal_with_flagged_question" method="POST">
@@ -25,7 +25,7 @@
       type="radio"
       id="remove_flag"
       name="deal_with_flag"
-      value="remove_flag {{question[0]}}"
+      value="remove_flag {{ question[0] }}"
       checked="checked"
     />
     <label for="remove_flag">Poista ilmianto</label>
@@ -33,22 +33,22 @@
       type="radio"
       id="remove_question"
       name="deal_with_flag"
-      value="remove_question {{question[0]}}"
+      value="remove_question {{ question[0] }}"
     />
     <label for="remove_question">Poista kysymys</label>
     <input
       type="radio"
       id="update_question"
       name="deal_with_flag"
-      value="update {{question[0]}}"
+      value="update {{ question[0] }}"
     />
     <label for="update_question">Päivitä kysymys(ei vielä toteutettu)</label>
     <br />
-    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 
     <input type="submit" value="käsittele" />
   </form>
   <br />
-  {%endfor%}
+  {% endfor %}
 </div>
 {% endblock %}

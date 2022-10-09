@@ -5,7 +5,8 @@
     <a href="/newquestion">lisää uusi kysymys</a>
     <a href="/highscores">highscore</a>
     <a href="/logout">kirjaudu ulos</a>
-    {% if is_admin() %} <a href="/admin">ylläpito</a> {%endif%}
+    {% if is_admin() %} <a href="/admin">ylläpito</a> 
+    {% endif %}
   </nav>
-  {%endif%}
+  {% endif %}
 </header>

@@ -1,8 +1,6 @@
-import secrets
 from db import db
 from flask import request, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from os import abort
 
 def login(name, password):
     sql = "SELECT id, name, password, admin FROM users WHERE name=:name"
@@ -19,7 +17,6 @@ def login(name, password):
 def logout():
     del session["user_id"]
     del session["user_name"]
-    del session["csrf_token"]      
 
 def check_logged():
     return session.get("user_id")
@@ -48,10 +45,11 @@ def check_admin_rights():
         return False
         
     return is_admin[0]
+
 def toggleAdmin(id):
-    #This is made for future use and is completely untested
-    #Admin stuff is yet to be implemented
-    if check_adminRights():
+    #This is a scetch made for future use and is completely untested
+    #Admin stuff is yet to be implemented completely
+    if check_admin_rights():
         sql = "SELECT admin FROM users WHERE id=:id"
         result = db.session.execute(sql, {"id":id})
 

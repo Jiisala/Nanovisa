@@ -1,13 +1,14 @@
-from concurrent.futures.process import _ThreadWakeup, _threads_wakeups
 from db import db
 from flask import session
 from random import shuffle
 
-#This function will pass calls to other specialized functions
-#The queries will get all questons matching the given arguments, 
-#because selecting random lines in SQL is costly operation compared to python.
-#I'm fairly certain that there is a more elegant way of doing many things here, but this should work
-
+# The first function calls bunch of other functions to gather a question set corresponding to user input.
+# There propably is a more elegant way of achieving all this, but this works.
+# I chose to fetch all of the questions passing the criteria, shuffle them and return needed amount,
+# This is due the fact that getting a random sample from database using straight up SQL queries leads 
+# to some performance isssues if the database grows. Python on the otherhand seems to handle randomizing 
+# relatively nicely.
+ 
 def get_new_question_set(how_many, keywords, include_own, include_answered, fill_with_random ):
     user_id = session.get("user_id")
     if include_own and include_answered:
@@ -60,7 +61,13 @@ def get_questions_with_all_constrains(keywords, user_id):
             AND A.question_id IS NULL
             AND Q.user_id <> :user_id 
             """
-            result = db.session.execute(sql,{"user_id":user_id, "keywords0":keywords[0], "keywords1":keywords[1],"keywords2":keywords[2],"keywords3":keywords[3]})
+            result = db.session.execute(sql,{
+                "user_id":user_id, 
+                "keywords0":keywords[0], 
+                "keywords1":keywords[1],
+                "keywords2":keywords[2],
+                "keywords3":keywords[3]
+                })
             questions = result.fetchall()
         except:
             return False
@@ -87,7 +94,13 @@ def get_questions_with_all_constrains(keywords, user_id):
             )
             AND Q.user_id <> :user_id 
             """
-            result = db.session.execute(sql,{"user_id":user_id, "keywords0":keywords[0], "keywords1":keywords[1],"keywords2":keywords[2],"keywords3":keywords[3]})
+            result = db.session.execute(sql,{
+                "user_id":user_id, 
+                "keywords0":keywords[0], 
+                "keywords1":keywords[1],
+                "keywords2":keywords[2],
+                "keywords3":keywords[3]
+                })
             questions = result.fetchall()
         except:
             return False
@@ -105,10 +118,15 @@ def get_questions_include_own(keywords, user_id):
             AND A.user_id IS NULL 
             AND A.question_id IS NULL
             """
-            result = db.session.execute(sql,{"user_id":user_id, "keywords0":keywords[0], "keywords1":keywords[1],"keywords2":keywords[2],"keywords3":keywords[3]})
+            result = db.session.execute(sql,{
+                "user_id":user_id, 
+                "keywords0":keywords[0], 
+                "keywords1":keywords[1],
+                "keywords2":keywords[2],
+                "keywords3":keywords[3]
+                })
             questions = result.fetchall()
         except:
-            print("fails, includeown")
             return False
     else:
         try:
@@ -131,7 +149,13 @@ def get_questions_include_own(keywords, user_id):
             AND Q.keyword4 <> '')
             )
             """
-            result = db.session.execute(sql,{"user_id":user_id, "keywords0":keywords[0], "keywords1":keywords[1],"keywords2":keywords[2],"keywords3":keywords[3]})
+            result = db.session.execute(sql,{
+                "user_id":user_id, 
+                "keywords0":keywords[0], 
+                "keywords1":keywords[1],
+                "keywords2":keywords[2],
+                "keywords3":keywords[3]
+                })
             questions = result.fetchall()
         except:
             return False
@@ -146,10 +170,15 @@ def get_questions_include_answered(keywords, user_id):
             WHERE F.question_id IS NULL 
             AND Q.user_id <> :user_id 
             """
-            result = db.session.execute(sql,{"user_id":user_id, "keywords0":keywords[0], "keywords1":keywords[1],"keywords2":keywords[2],"keywords3":keywords[3]})
+            result = db.session.execute(sql,{
+                "user_id":user_id, 
+                "keywords0":keywords[0], 
+                "keywords1":keywords[1],
+                "keywords2":keywords[2],
+                "keywords3":keywords[3]
+                })
             questions = result.fetchall()
         except:
-            print("fails, includeanswered")
             return False
     else:    
         try:
@@ -169,10 +198,15 @@ def get_questions_include_answered(keywords, user_id):
             )
             AND Q.user_id <> :user_id 
             """
-            result = db.session.execute(sql,{"user_id":user_id, "keywords0":keywords[0], "keywords1":keywords[1],"keywords2":keywords[2],"keywords3":keywords[3]})
+            result = db.session.execute(sql,{
+                "user_id":user_id, 
+                "keywords0":keywords[0], 
+                "keywords1":keywords[1],
+                "keywords2":keywords[2],
+                "keywords3":keywords[3]
+                })
             questions = result.fetchall()
         except:
-            print("fails, includeanswered")
             return False
     return questions
 
@@ -184,10 +218,14 @@ def get_questions_include_own_and_answered(keywords):
             on Q.id = F.question_id 
             WHERE F.question_id IS NULL  
             """
-            result = db.session.execute(sql,{"keywords0":keywords[0], "keywords1":keywords[1],"keywords2":keywords[2],"keywords3":keywords[3]})
+            result = db.session.execute(sql,{
+                "keywords0":keywords[0], 
+                "keywords1":keywords[1],
+                "keywords2":keywords[2],
+                "keywords3":keywords[3]
+                })
             questions = result.fetchall()
         except:
-            print("fails")
             return False
     else:
         try:
@@ -206,16 +244,19 @@ def get_questions_include_own_and_answered(keywords):
             AND Q.keyword4 <> '')
             ) 
             """
-            result = db.session.execute(sql,{"keywords0":keywords[0], "keywords1":keywords[1],"keywords2":keywords[2],"keywords3":keywords[3]})
+            result = db.session.execute(sql,{
+                "keywords0":keywords[0], 
+                "keywords1":keywords[1],
+                "keywords2":keywords[2],
+                "keywords3":keywords[3]
+                })
             questions = result.fetchall()
         except:
-            print("fails")
             return False
     return questions
 
 def fill_with_rest_with_random(questions, how_many):
     temp = [q[0] for q in questions]
-    print (temp)
     additional_questions = get_all_questions()
     
     filterer = filter(lambda a: a[0] not in temp, additional_questions)
@@ -231,6 +272,7 @@ def fill_with_rest_with_random(questions, how_many):
         return questions
     for i in range(missing):
         questions.append(filtered_questions[i])
+    
     return questions
 
 def get_all_questions():
@@ -251,10 +293,20 @@ def add_question(question, choices, answer, keywords):
     try:
         sql = """INSERT INTO questions (question, choice1, choice2, choice3, choice4, answer, keyword1,keyword2,keyword3,keyword4, user_id)
                  VALUES (:question, :choice1, :choice2, :choice3, :choice4, :answer, :keyword1,:keyword2, :keyword3, :keyword4, :user_id)"""
-        db.session.execute(sql, {"question":question, "choice1":choices[0], "choice2":choices[1], "choice3":choices[2], "choice4":choices[3], "answer":answer, "keyword1":keywords[0],"keyword2":keywords[1],"keyword3":keywords[2],"keyword4":keywords[3], "user_id":user_id})
+        db.session.execute(sql, {
+            "question":question, 
+            "choice1":choices[0], 
+            "choice2":choices[1], 
+            "choice3":choices[2], 
+            "choice4":choices[3], 
+            "answer":answer, 
+            "keyword1":keywords[0],
+            "keyword2":keywords[1],
+            "keyword3":keywords[2],
+            "keyword4":keywords[3], 
+            "user_id":user_id})
         db.session.commit()
     except:
-        
         return False
     return True
 
