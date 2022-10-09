@@ -4,6 +4,7 @@ NanoVisa on tietokilpailusovellus jossa käyttäjät voivat itse luoda kysymyksi
 
 Sovellus on testattavissa Herokussa
 Herokuun on luotu testi käyttäjä, sekä testi admin. Voit toki myös luoda oman käyttäjän, se on jopa suositeltavaa. Uutta admin-käyttäjää ei voi luoda sovelluksessa suoraan.
+### HUOM! testi admin: nimi testiadmin, salasana testiadmin 
 
 [https://nanovisa.herokuapp.com/](https://nanovisa.herokuapp.com/)
 
