@@ -3,6 +3,7 @@
 NanoVisa on tietokilpailusovellus jossa käyttäjät voivat itse luoda kysymyksiä ja vastata toistensa kysymyksiin. Kysymyksistä voi luoda haluamansa pituisen setin ja avainsanoilla voi rajata kysymysvalikoimaa koskemaan tiettyjä aihealueita.
 
 Sovellus on testattavissa Herokussa
+Heroku versioon on luotu testi käyttäjä, sekä testi admin. Voit toki myös luoda oman käyttäjän, se on jopa suositeltavaa. Uutta admin-käyttäjää ei v.oi luoda sovelluksessa suoraan
 [https://nanovisa.herokuapp.com/](https://nanovisa.herokuapp.com/)
 
 Tämän hetkinen tila:
