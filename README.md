@@ -7,23 +7,24 @@ Sovellus on testattavissa Herokussa
 
 Tämän hetkinen tila:
 
-Projektille on kehitetty karkea perustoiminnallisuus. Pääosa ajasta on mennyt Jinjan käytön harjoitteluun.
+Projektin toiminnallisuus on toteutettu suurimmaksi osaksi, ulkoasun siistimistä ei ole vielä edes aloitettu
 
-- Käyttäjän lisääminen ja sisäänkirjautuminen toimivat. Ne noudattelevat esimerkkisovelluksen logiikkaa, mutta oletan ettei ole tarkoitus keksiä pyörää uudestaan.
-- Kysymyksiä voi lisätä ja niihin voi vastata.
-- Oikea ja väärä vastaus tunnistetaan, mutta tiedolla ei vielä tehdä mitään.
-- Sivuilla navigoiminen toimii kuten sen haluankin toimivan.
-- Tietokannasta on luotu alustava versio, mutta se on aivan liian yksinkertainen kurssin tavoitteisiin nähden.
-- Käyttäjillä on kaksi roolia käyttäjä ja admin, nämä eivät vielä eroa toisistaan, eikä adminin luomiselle ole implementoitua mekaniikkaa.
+- Käyttäjän lisääminen ja sisäsisäänkirjautuminenänkirjautuminen toimivat. Ne noudattelevat esimerkkisovelluksen logiikkaa, mutta oletan ettei ole tarkoitus keksiä pyörää uudestaan.
+- Kysymyksiä voi lisätä.
+- Kysymys-settejä voi muodostaa ja niihin voi vastata.
+- Pistelasku toimii melkein, bugi jonka olen jo yksilöinyt vaivaa vielä.
+  (yritin tallettaa session dataan liikaa tietoa, ratkaisuksi ajattelin server side sessiota, mutta sen toteuttaminen jää myöhemmäksi).
+- kysymyksiä voi ilmiantaa ylläpidolle tarkistettaviksi
+- ylläpitäjä voi tarkistaa kysymyksiä ja poistaa niitä.
 
 Seuraavat askeleet:
 
-- Tietokannasta on jo olemassa uusi versio, joka on kuitenkin vielä hieman keskeneräinen.
-- Pistelasku ja tilastointi on myös työn alla.
-- Käyttäjälle näytettävät virheilmoitukset on tarkoitus saada näkymään järkevästi samalla sivulla jolla virhe on tapahtunut.
-- Kysymys settien luominen on myös toteuttamatta.
-- Kuten on myös moni muu alun perin suunniteltu toiminnallisuus
-- Sivujen ulkoasun parantamisen säästän viimeiseksi.
+- loput admin toiminnallisuudet
+- käyttäjän profiilisivu
+- ulkoasu
+- tällä hetkellä moni syötekenttä validoidaan vain selaimessa, olisi varmaan syytä validoida ne myös bäkkärin puolella
+- monesta kohdasta puuttuu vielä käyttäjälle annettu palaute toiminnasta
+- ja tietysti bugien korjaus
 
 ### -- Tästä alaspäin alkuperäinen suunnitelma --
 
