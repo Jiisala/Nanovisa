@@ -1,0 +1,53 @@
+{% extends "layout.html" %} {% block content %}
+<div>
+  <h3>Muokkaa kysymystä</h3>
+  {% for message in get_flashed_messages(category_filter=["message error"]) %}
+  <div class="message_error">{{ message }}</div>
+  {%endfor%} id = {{ question[0] }}
+  <form action="/updatequestion/{{question[0]}}" method="post">
+    <textarea id="question" name="question" rows="5" cols="40" required>
+{{question[1]}}</textarea
+    >
+    <p>
+      vastausvaihtoehdot: <br />
+      {% for a in range(2,6) %} {{a-1}}
+      <input
+        type="text"
+        id="choice"
+        name="choice"
+        value="{{question[a]}}"
+        required
+      />
+      <br />
+      {% endfor %}
+    </p>
+    <label for="answer">Oikea vastaus: </label>
+    <p>
+      <input type="number" name="answer" id="answer" value="{{question[6]}}" />
+    </p>
+    <label for="keywords">avainsanat</label>
+
+    <p>
+      {% for a in range(4) %} {% if a == 0 %} {{ a+1 }}.
+      <input
+        type="text"
+        id="keywords0"
+        name="keywords0"
+        value="{{question[7]}}"
+        required
+      />
+      {% else %} {{ a+1 }}.
+      <input
+        type="text"
+        id="keywords{{ a }}"
+        name="keywords_rest"
+        value="{{question[a+7]}}"
+      />
+      {% endif %} {% endfor %}
+      <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+      <input type="hidden" name="id" value="{{question[0]}}" />
+      <input type="submit" value="submit" />
+    </p>
+  </form>
+</div>
+{% endblock %}

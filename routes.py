@@ -104,9 +104,14 @@ def results():
 def answered_question():
     id = request.form.get("id")
     question_id = session["question_set"][int(id)]["id"]
+    question_user_id = question_id = session["question_set"][int(id)]["user_id"]
     answer = int(request.form.get("answer"))
     correct_or_not =  answer == int(session["question_set"][int(id)]["answer"])
-    if questions.question_answered(question_id, correct_or_not):
+    if session.get("user_id") == question_user_id:
+        session["question_set"][int(id)]["player_answer"] = answer
+        session["question_set"][int(id)]["new_question"] = False
+      
+    elif questions.question_answered(question_id, correct_or_not):
         session["question_set"][int(id)]["player_answer"] = answer
         session["question_set"][int(id)]["new_question"] = True
     else:
@@ -154,6 +159,56 @@ def deald_with_flagged_questions():
         if action[0] == "remove_question":
             questions.remove_question(int(action[1]))
         if action[0] == "update_question":
-            #Not done yet
-            pass    
+            return redirect (f"updatequestion/{action[1]}")
+                
     return redirect("/admin")
+
+@app.route("/updatequestion/<int:id>", methods=["GET", "POST"])
+def update_question(id):
+    question_to_update = questions.get_one_question(id)
+    print ("BOOOOM", question_to_update)
+    if request.method == "GET":
+        return render_template("updatequestion.html", id = id, question = question_to_update)
+    if request.method == "POST":
+        
+        question =request.form["question"]
+        answer = request.form["answer"]
+        choices = request.form.getlist("choice")
+        keywords_rest = request.form.getlist("keywords_rest")
+        keywords = [request.form["keywords0"].strip()] 
+        for word in keywords_rest:
+            keywords.append(word.strip())
+
+        if not questions.update_question(question_to_update[0],question_to_update[11] ,question, choices, answer, keywords):
+            flash("Syystä tai toisesta kysymyksen päivittäminen meni pieleen", "error")
+            return render_template("updatequestion.html", id = id, question = question_to_update)
+        question_to_update = questions.get_one_question(id)
+        questions.remove_flag(id)
+        flash(f'Kysymys: {question_to_update[0]} päivitetty.', "message success")            
+        return redirect("/admin")
+        
+    return redirect("/admin")
+
+@app.route("/updateuser", methods=["POST"])
+def update_user():
+    user_id = request.form.get("user_id")
+    if request.form.get("action") == "oikeudet":
+        try:
+            admin_status = users.toggle_admin(user_id)
+            flash(f'Käyttäjän {user_id} ylläpito oikeus on nyt: {admin_status}', "message success")
+        except:
+            flash("Syystä tai toisesta ylläpitäjän statusta ei voitu päivittää", "message_error")
+            
+
+    if request.form.get("action") == "poista":
+        try:
+            users.remove_user(user_id)
+            flash(f'Käyttäjän {user_id} on nyt poistettu', "message success")
+        except:
+            flash("Syystä tai toisesta käyttäjää ei voitu poistaa", "message_error")
+                
+    return redirect("/admin")
+
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")

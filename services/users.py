@@ -47,24 +47,32 @@ def check_admin_rights():
         
     return is_admin[0]
 
-def toggleAdmin(id):
-    #This is a scetch made for future use and is completely untested
-    #Admin stuff is yet to be implemented completely
+def toggle_admin(user_id):
+    
     if check_admin_rights():
-        sql = "SELECT admin FROM users WHERE id=:id"
-        result = db.session.execute(sql, {"id":id})
-
-        user = result.fetchone()
-        isAdmin = not user.admin
+        
         try:
-            sql = "UPDATE users SET admin =:isAdmin WHERE id=:id"
+            sql = """UPDATE users 
+            SET admin = NOT admin
+            WHERE id = :user_id
+            RETURNING admin"""
                     
-            db.session.execute(sql, {"admin":isAdmin})
+            result=db.session.execute(sql, {"user_id":user_id})
             db.session.commit()
+            admin = result.fetchone()
         except:
             return False
-
-def banUser(id):
-    #placeholder for future use
-    pass
+    return admin
+def remove_user(user_id):
+    if check_admin_rights():
+        
+        try:
+            sql = "DELETE FROM users WHERE id = :user_id"
+                    
+            db.session.execute(sql, {"user_id":user_id})
+            db.session.commit()
+            
+        except:
+            return False
+    return True
 

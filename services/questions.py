@@ -285,6 +285,14 @@ def get_all_questions():
     questions = result.fetchall()
     return questions
 
+def get_one_question(question_id):
+    
+    sql = """SELECT * FROM questions 
+            WHERE id = :question_id"""
+    result = db.session.execute(sql, {"question_id":question_id})
+    question = result.fetchone()
+    return question
+
 def add_question(question, choices, answer, keywords):
     user_id = session.get("user_id")
     
@@ -294,6 +302,46 @@ def add_question(question, choices, answer, keywords):
         sql = """INSERT INTO questions (question, choice1, choice2, choice3, choice4, answer, keyword1,keyword2,keyword3,keyword4, user_id)
                  VALUES (:question, :choice1, :choice2, :choice3, :choice4, :answer, :keyword1,:keyword2, :keyword3, :keyword4, :user_id)"""
         db.session.execute(sql, {
+            "question":question, 
+            "choice1":choices[0], 
+            "choice2":choices[1], 
+            "choice3":choices[2], 
+            "choice4":choices[3], 
+            "answer":answer, 
+            "keyword1":keywords[0],
+            "keyword2":keywords[1],
+            "keyword3":keywords[2],
+            "keyword4":keywords[3], 
+            "user_id":user_id})
+        db.session.commit()
+    except:
+        return False
+    return True
+
+def update_question(question_id, user_id, question, choices, answer, keywords):
+    
+    
+    if question == "":
+        return False
+    try:
+        sql = """UPDATE questions 
+            SET 
+            question = :question, 
+            choice1 = :choice1, 
+            choice2 =:choice2, 
+            choice3 =:choice3, 
+            choice4 =:choice4, 
+            answer = :answer, 
+            keyword1 = :keyword1,
+            keyword2 = :keyword2,
+            keyword3 = :keyword3,
+            keyword4 = :keyword4, 
+            user_id = :user_id
+                 WHERE id = :question_id
+                  
+                 """
+        db.session.execute(sql, {
+            "question_id":question_id,
             "question":question, 
             "choice1":choices[0], 
             "choice2":choices[1], 
@@ -339,8 +387,8 @@ def count_highscore():
 def get_user_score():
     user_id = session.get("user_id")
     try:
-        sql = """SELECT COUNT(correct) FROM answers_given
-        WHERE correct = TRUE and user_id = :user_id
+        sql = """SELECT COUNT(correct) FROM answers_given as A
+        WHERE A.correct = TRUE and user_id = :user_id
         """
         result = db.session.execute(sql, {"user_id":user_id})
         user_score = result.fetchone()
