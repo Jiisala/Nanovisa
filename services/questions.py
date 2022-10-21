@@ -52,14 +52,17 @@ def get_questions_with_all_constrains(keywords, user_id):
     if all(a == '' for a in keywords):
         try:
             sql = """SELECT * FROM questions AS Q
-            LEFT JOIN flagged_questions AS F 
-            on Q.id = F.question_id 
-            LEFT JOIN answers_given AS A
-            ON :user_id = A.user_id AND Q.id = A.question_id
-            WHERE F.question_id IS NULL 
-            AND A.user_id IS NULL 
-            AND A.question_id IS NULL
-            AND Q.user_id <> :user_id 
+            WHERE Q.id NOT IN(
+                SELECT question_id 
+                FROM flagged_questions)
+            AND
+            Q.id NOT IN (
+                SELECT question_id
+                FROM answers_given
+                WHERE user_id = :user_id
+            )
+            AND Q.user_id <> :user_id
+            
             """
             result = db.session.execute(sql,{
                 "user_id":user_id, 
@@ -68,20 +71,26 @@ def get_questions_with_all_constrains(keywords, user_id):
                 "keywords2":keywords[2],
                 "keywords3":keywords[3]
                 })
-            questions = result.fetchall()
+            questions = result.fetchall()            
+            for q in questions:
+                print(q)
+
+
         except:
             return False
                 
     else:
         try:
             sql = """SELECT * FROM questions AS Q
-            LEFT JOIN flagged_questions AS F 
-            on Q.id = F.question_id 
-            LEFT JOIN answers_given AS A
-            ON :user_id = A.user_id AND Q.id = A.question_id
-            WHERE F.question_id IS NULL 
-            AND A.user_id IS NULL 
-            AND A.question_id IS NULL
+            WHERE Q.id NOT IN(
+                SELECT question_id 
+                FROM flagged_questions)
+            AND
+            Q.id NOT IN (
+                SELECT question_id
+                FROM answers_given
+                WHERE user_id = :user_id
+            )
             AND  (
                 (Q.keyword1 IN (:keywords0, :keywords1, :keywords2, :keywords3)
             AND Q.keyword1 <> '')
@@ -110,13 +119,15 @@ def get_questions_include_own(keywords, user_id):
     if all(a == '' for a in keywords):
         try:
             sql = """SELECT * FROM questions AS Q
-            LEFT JOIN flagged_questions AS F 
-            on Q.id = F.question_id 
-            LEFT JOIN answers_given AS A
-            ON :user_id = A.user_id AND Q.id = A.question_id
-            WHERE F.question_id IS NULL 
-            AND A.user_id IS NULL 
-            AND A.question_id IS NULL
+            WHERE Q.id NOT IN(
+                SELECT question_id 
+                FROM flagged_questions)
+            AND
+            Q.id NOT IN (
+                SELECT question_id
+                FROM answers_given
+                WHERE user_id = :user_id
+            )
             """
             result = db.session.execute(sql,{
                 "user_id":user_id, 
@@ -131,13 +142,15 @@ def get_questions_include_own(keywords, user_id):
     else:
         try:
             sql = """SELECT * FROM questions AS Q
-            LEFT JOIN flagged_questions AS F 
-            on Q.id = F.question_id 
-            LEFT JOIN answers_given AS A
-            ON :user_id = A.user_id AND Q.id = A.question_id
-            WHERE F.question_id IS NULL 
-            AND A.user_id IS NULL 
-            AND A.question_id IS NULL
+            WHERE Q.id NOT IN(
+                SELECT question_id 
+                FROM flagged_questions)
+            AND
+            Q.id NOT IN (
+                SELECT question_id
+                FROM answers_given
+                WHERE user_id = :user_id
+            )
             AND  (
                 (Q.keyword1 IN (:keywords0, :keywords1, :keywords2, :keywords3)
             AND Q.keyword1 <> '')
@@ -165,9 +178,9 @@ def get_questions_include_answered(keywords, user_id):
     if all(a == '' for a in keywords):
         try:
             sql = """SELECT * FROM questions AS Q
-            LEFT JOIN flagged_questions AS F 
-            on Q.id = F.question_id 
-            WHERE F.question_id IS NULL 
+            WHERE Q.id NOT IN(
+                SELECT question_id 
+                FROM flagged_questions)
             AND Q.user_id <> :user_id 
             """
             result = db.session.execute(sql,{
@@ -183,9 +196,9 @@ def get_questions_include_answered(keywords, user_id):
     else:    
         try:
             sql = """SELECT * FROM questions AS Q
-            LEFT JOIN flagged_questions AS F 
-            on Q.id = F.question_id 
-            WHERE F.question_id IS NULL 
+            WHERE Q.id NOT IN(
+                SELECT question_id 
+                FROM flagged_questions) 
             AND  (
                 (Q.keyword1 IN (:keywords0, :keywords1, :keywords2, :keywords3)
             AND Q.keyword1 <> '')
@@ -214,9 +227,9 @@ def get_questions_include_own_and_answered(keywords):
     if all(a == '' for a in keywords):
         try:
             sql = """SELECT * FROM questions AS Q
-            LEFT JOIN flagged_questions AS F 
-            on Q.id = F.question_id 
-            WHERE F.question_id IS NULL  
+            WHERE Q.id NOT IN(
+                SELECT question_id 
+                FROM flagged_questions)  
             """
             result = db.session.execute(sql,{
                 "keywords0":keywords[0], 
@@ -230,9 +243,9 @@ def get_questions_include_own_and_answered(keywords):
     else:
         try:
             sql = """SELECT * FROM questions AS Q
-            LEFT JOIN flagged_questions AS F 
-            on Q.id = F.question_id 
-            WHERE F.question_id IS NULL 
+            WHERE Q.id NOT IN(
+                SELECT question_id 
+                FROM flagged_questions)
             AND  (
                 (Q.keyword1 IN (:keywords0, :keywords1, :keywords2, :keywords3)
             AND Q.keyword1 <> '')
@@ -278,9 +291,10 @@ def fill_with_rest_with_random(questions, how_many):
 def get_all_questions():
     
     sql = """SELECT * FROM questions AS Q
-            LEFT JOIN flagged_questions AS F 
-            on Q.id = F.question_id 
-            WHERE F.question_id IS NULL"""
+            WHERE Q.id NOT IN(
+                SELECT question_id 
+                FROM flagged_questions)
+            """
     result = db.session.execute(sql)
     questions = result.fetchall()
     return questions
@@ -360,7 +374,7 @@ def update_question(question_id, user_id, question, choices, answer, keywords):
 
 def question_answered(question_id, correct):
     user_id = session.get("user_id")
-
+    print("bäkkär qid uid", question_id, user_id )
     try:
         sql = """INSERT INTO answers_given (question_id, user_id, correct)
                  VALUES (:question_id, :user_id, :correct)"""

@@ -104,7 +104,8 @@ def results():
 def answered_question():
     id = request.form.get("id")
     question_id = session["question_set"][int(id)]["id"]
-    question_user_id = question_id = session["question_set"][int(id)]["user_id"]
+    print("Q ID", question_id)
+    question_user_id = session["question_set"][int(id)]["user_id"]
     answer = int(request.form.get("answer"))
     correct_or_not =  answer == int(session["question_set"][int(id)]["answer"])
     if session.get("user_id") == question_user_id:
