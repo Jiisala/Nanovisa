@@ -40,6 +40,8 @@ def login_user():
     pwcheck = request.form["passwordAgain"]
     if password != pwcheck:
         flash("syötä sama salasana kahdesti", "error_new_user")
+    if len(username) > 20:
+        flash("Nimen maksimipituus on 20 merkkiä", "error_new_user")
     elif not users.new_user(username, password):
         flash("Syystä tai toisesta käyttäjän luominen ei onnistunut", "error_new_user")
     
@@ -98,7 +100,8 @@ def results():
         return render_template("login.html")
     user_score = questions.get_user_score()
     position = questions.get_user_position()
-    return render_template("results.html",  user_score = user_score, position = position )
+    admin=users.check_admin_rights()
+    return render_template("results.html", user_score = user_score, position = position, admin= admin)
     
 @app.route("/answer", methods=["POST"])
 def answered_question():
@@ -107,7 +110,8 @@ def answered_question():
     question_user_id = session["question_set"][int(id)]["user_id"]
     answer = int(request.form.get("answer"))
     correct_or_not =  answer == int(session["question_set"][int(id)]["answer"])
-    if session.get("user_id") == question_user_id:
+    
+    if session.get("user_id") == question_user_id or users.check_admin_rights():
         session["question_set"][int(id)]["player_answer"] = answer
         session["question_set"][int(id)]["new_question"] = False
       
@@ -137,7 +141,6 @@ def confirm_flag():
     question_id = request.form.get("id")
     reason = request.form.get("reason")
     try:
-        print("routes", question_id, reason)
         questions.flag_question(question_id,reason)
     except:
         print("error handling goes here, when I get around adding it")
@@ -164,14 +167,30 @@ def deald_with_flagged_questions():
                 
     return redirect("/admin")
 
+@app.route("/user_update_question", methods=["POST"])
+def user_update_question():
+    question_id = request.form.get("question_id")
+                
+    return redirect(f"/updatequestion/{question_id}")
+
+@app.route("/user_remove_question", methods=["POST"])
+def user_remove_question():
+    print("HERE")
+    question_id = request.form.get("question_id")
+    questions.remove_question(question_id)            
+    return redirect("/profile")
+
 @app.route("/updatequestion/<int:id>", methods=["GET", "POST"])
 def update_question(id):
     question_to_update = questions.get_one_question(id)
+    
     if request.method == "GET":
-        return render_template("updatequestion.html", id = id, question = question_to_update)
+        
+        if users.check_admin_rights() or question_to_update[11] == session.get("user_id"):
+            return render_template("updatequestion.html", id = id, question = question_to_update)
     if request.method == "POST":
         
-        question =request.form["question"]
+        question = request.form["question"]
         answer = request.form["answer"]
         choices = request.form.getlist("choice")
         keywords_rest = request.form.getlist("keywords_rest")
@@ -182,12 +201,13 @@ def update_question(id):
         if not questions.update_question(question_to_update[0],question_to_update[11] ,question, choices, answer, keywords):
             flash("Syystä tai toisesta kysymyksen päivittäminen meni pieleen", "error")
             return render_template("updatequestion.html", id = id, question = question_to_update)
-        question_to_update = questions.get_one_question(id)
-        questions.remove_flag(id)
-        flash(f'Kysymys: {question_to_update[0]} päivitetty.', "message success")            
-        return redirect("/admin")
-        
-    return redirect("/admin")
+        if users.check_admin_rights():
+            questions.remove_flag(id)
+            flash(f'Kysymys: {question_to_update[0]} päivitetty.', "message success")            
+            return redirect("/admin")
+        else:
+            return redirect("/profile")        
+    return redirect("/")
 
 @app.route("/updateuser", methods=["POST"])
 def update_user():
@@ -198,19 +218,26 @@ def update_user():
         if admin_status:
             flash(f'Käyttäjän {user_id} ylläpito oikeus on nyt: {admin_status}', "message success")
         else:
-            print("HERE")
             flash(f"Käyttäjää {user_id} ei löytynyt, tarkista ID", "message error")
             
 
     if request.form.get("action") == "poista":
-        try:
-            users.remove_user(user_id)
-            flash(f'Käyttäjän {user_id} on nyt poistettu', "message success")
-        except:
-            flash("Syystä tai toisesta käyttäjää ei voitu poistaa", "message error")
+        
+        user =users.remove_user(user_id)
+        if user:
+            flash(f'Käyttäjä {user_id} on nyt poistettu', "message success")
+        else:
+            flash(f"Käyttäjää {user_id} ei löytynyt, tarkista ID", "message error")
                 
     return redirect("/admin")
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html")
+    user_questions = questions.get_questions_by_user()
+    user_answered = questions.count_questions_answered_by()
+    user_position = questions.get_user_position()
+    
+    return render_template("profile.html",
+                            user_questions = user_questions, 
+                            user_answered = user_answered, 
+                            user_position = user_position)

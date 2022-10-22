@@ -1,3 +1,4 @@
+import re
 from db import db
 from flask import session
 from random import shuffle
@@ -306,6 +307,14 @@ def get_one_question(question_id):
     result = db.session.execute(sql, {"question_id":question_id})
     question = result.fetchone()
     return question
+def get_questions_by_user():
+    user_id=session.get("user_id")
+
+    sql = "SELECT * FROM questions WHERE user_id = :user_id"
+    result = db.session.execute(sql, {"user_id":user_id})
+    questions = result.fetchall()
+
+    return questions
 
 def add_question(question, choices, answer, keywords):
     user_id = session.get("user_id")
@@ -333,8 +342,7 @@ def add_question(question, choices, answer, keywords):
     return True
 
 def update_question(question_id, user_id, question, choices, answer, keywords):
-    
-    
+        
     if question == "":
         return False
     try:
@@ -374,7 +382,6 @@ def update_question(question_id, user_id, question, choices, answer, keywords):
 
 def question_answered(question_id, correct):
     user_id = session.get("user_id")
-    print("bäkkär qid uid", question_id, user_id )
     try:
         sql = """INSERT INTO answers_given (question_id, user_id, correct)
                  VALUES (:question_id, :user_id, :correct)"""
@@ -397,6 +404,19 @@ def count_highscore():
     except:
         return False
     return highscores
+
+def count_questions_answered_by():
+    user_id=session.get("user_id")
+
+    sql = """SELECT COUNT(*) FROM answers_given 
+             WHERE user_id = :user_id
+             GROUP BY correct"""
+    result = db.session.execute(sql, {"user_id":user_id})
+    answers_raw = result.fetchall()
+    
+    answers =[item for item in answers_raw for item in item]
+    
+    return answers
 
 def get_user_score():
     user_id = session.get("user_id")
@@ -429,10 +449,8 @@ def get_all_keywords():
     return suggestions
 
 def flag_question(id, reason):
-    print("here")
     user_id = session.get("user_id")
     question_id = session["question_set"][int(id)]["id"]
-    print("UID, QUID", user_id, question_id)
     try:
         sql="""INSERT INTO flagged_questions (question_id, flagger_id, reason)
             VALUES(:question_id, :user_id, :reason)"""

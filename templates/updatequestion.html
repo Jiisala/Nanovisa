@@ -45,7 +45,9 @@
       />
       {% endif %} {% endfor %}
       <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+
       <input type="hidden" name="id" value="{{question[0]}}" />
+
       <br />
       <br />
       <input type="submit" value="submit" />

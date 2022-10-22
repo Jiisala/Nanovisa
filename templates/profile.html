@@ -1,18 +1,39 @@
 {% extends "layout.html" %} {% block content %}
 <div class="basic">
-  <h3>{{session.get("user_name")}}</h3>
-
-  Laatimasi kysmykset: <br />
-  Tilastoja: <br />
-  olet vastannut x kysymykseen. <br />
-  oikein: <br />
-  väärin: <br />
-  suhde: <br />
-  Olet highscore listalla sijalla: <br />
-  {% endblock %}
-  <h2>Tähän tulee käyttäjän profiili OTSIKKONA käyttäjän nimi</h2>
-
-  <p>LISTA LISÄÄMISTÄNI KYSYMYKSISTÄ sekä MUOKKAA POISTA NAPPI</p>
-
-  <p>Tilastoja oikeista ja vääristä vastauksista kategorioittain jne</p>
+  <h2>{{session.get("user_name")}}</h2>
+  <h3>Tilastoja:</h3>
+  olet vastannut yhteensä {{user_answered[0] +user_answered[1]}} kysymykseen.
+  <br /><br />
+  oikein: {{ user_answered[0] }}<br />
+  väärin: {{ user_answered[1] }}<br />
+  oikein / väärin suhde: {% if user_answered[0] == 0 %} 1 {% else %}
+  {{user_answered[0] / user_answered[1]}} {% endif %} <br /><br />
+  Olet highscore listalla sijalla: {{ user_position[0] }} <br />
+  <h3>Laatimasi kysmykset:</h3>
+  {% for question in user_questions %}
+  <br />
+  <div class="question">
+    ID: {{ question[0] }} <br /><br />
+    Kysymys: {{ question[1] }} <br /><br />
+    Vaihtoehto 1: {{ question[2] }} <br />
+    Vaihtoehto 2: {{ question[3] }} <br />
+    Vaihtoehto 3: {{ question[4] }} <br />
+    Vaihtoehto 4: {{ question[5] }} <br /><br />
+    Vastaus: {{ question[6] }} <br /><br />
+    Avainsana 1: {{ question[7] }} <br />
+    Avainsana 2: {{ question[8] }} <br />
+    Avainsana 3: {{ question[9] }} <br />
+    Avainsana 4: {{ question[10] }} <br /><br />
+  </div>
+  <div class="wrapper">
+    <form action="/deal_with_user_question" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <input type="hidden" name="question_id" value="{{ question[0] }} " />
+      <input type="hidden" name="question_user_id" value="{{ question[11] }} " />
+      <br />
+      <input type="submit" formaction="/user_update_question" name="update" value="muokkaa" />
+      <input type="submit" formaction="/user_remove_question" name="delete" value="poista" />
+    </form>
+  </div>
+  {% endfor %} {% endblock %}
 </div>

@@ -56,21 +56,19 @@ def toggle_admin(user_id):
         WHERE id = :user_id
         RETURNING admin"""
                 
-        result=db.session.execute(sql, {"user_id":user_id})
+        result = db.session.execute(sql, {"user_id":user_id})
         db.session.commit()
         admin = result.fetchone()
         
     return admin
 def remove_user(user_id):
     if check_admin_rights():
-        
-        try:
-            sql = "DELETE FROM users WHERE id = :user_id"
-                    
-            db.session.execute(sql, {"user_id":user_id})
-            db.session.commit()
             
-        except:
-            return False
-    return True
+        sql = "DELETE FROM users WHERE id = :user_id RETURNING id"
+                
+        result = db.session.execute(sql, {"user_id":user_id})
+        db.session.commit()
+        user = result.fetchone()
+    
+    return user
 

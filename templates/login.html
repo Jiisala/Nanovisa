@@ -8,33 +8,35 @@
   {% endfor %}
   <form action="/login" method="post">
     Nimi: <br />
-    <input type="Text" name="username" required />
-    <p>Salasana: <br /><input type="password" name="password" required /></p>
+    <input type="Text" name="username" required /> <br /><br />
+    Salasana: <br /><input type="password" name="password" required /><br />
 
-    <p>
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-      <input type="submit" value="Kirjaudu" />
-    </p>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" /> <br />
+    <input type="submit" value="Kirjaudu" />
   </form>
+
   <h2>tai luo uusi käyttäjä</h2>
   {% for message in get_flashed_messages(category_filter=["error_new_user"]) %}
-  <div class="message_error">{{ message }} {% endfor %}</div>
+  <div class="message_error">{{ message }}</div>
+  {% endfor %}
   <form action="/newuser" method="post">
     Nimi: <br />
-    <input type="Text" name="username" required />
-    <p>Salasana: <br /><input type="password" name="password" required /></p>
-    <p>
-      Salasana uudelleen: <br /><input
-        type="password"
-        name="passwordAgain"
-        required
-      />
-    </p>
+    <input type="Text" name="username" required /><br /><br />
+    Salasana: <br /><input
+      type="password"
+      name="password"
+      required
+    /><br /><br />
 
-    <p>
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-      <input type="submit" value="Luo uusi" />
-    </p>
+    Salasana uudelleen: <br /><input
+      type="password"
+      name="passwordAgain"
+      required
+    />
+    <br /><br />
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input type="submit" value="Luo uusi" />
   </form>
 </div>
 {% endblock %}
