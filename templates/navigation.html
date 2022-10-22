@@ -8,9 +8,10 @@
 
       {% if is_admin() %}
       <li><a href="/admin">ylläpito</a></li>
-      {% endif %} {% if session.user_id %}
-      <li><a href="/profile">{{ session.user_name }}</a></li>
       {% endif %}
+      <li><a href="/messages">viestit</a></li>
+      <li><a href="/profile">{{ session.user_name }}</a></li>
+
       <li><a href="/logout">kirjaudu ulos</a></li>
     </ul>
   </nav>

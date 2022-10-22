@@ -10,8 +10,8 @@
     <textarea
       id="question"
       name="question"
-      rows="5"
-      cols="40"
+      rows="10"
+      cols="60"
       required
     ></textarea>
     <p>
@@ -20,37 +20,36 @@
       <input type="text" id="choice" name="choice" required /> <br />
       {% endfor %}
     </p>
-    <label for="answer">Valitse oikea vastaus</label>
-    <p>
-      <select name="answer" id="answer">
-        <option value="1">A:</option>
-        <option value="2">B:</option>
-        <option value="3">C:</option>
-        <option value="4">D:</option>
-      </select>
-    </p>
-    <label for="keywords">Lisää vähintään yksi avainsana</label>
+    <label for="answer">Valitse oikea vastaus:</label> <br />
 
-    <p>
-      {% for a in range(4) %} {% if a == 0 %} {{ a+1 }}.
-      <input type="text" id="keywords0" name="keywords0" required /> {% else %}
-      {{ a+1 }}. <input type="text" id="keywords{{ a }}" name="keywords_rest" />
-      {% endif %}
-      <script>
-        $(function () {
-          autocomplete = [
-          {% for suggestion in  suggestions %}
-          "{{suggestion}}",
-          {%endfor%}
-        ]
-          $("#keywords{{a}}").autocomplete({
-            source: autocomplete,
-          })
+    <select name="answer" id="answer">
+      <option value="1">A:</option>
+      <option value="2">B:</option>
+      <option value="3">C:</option>
+      <option value="4">D:</option>
+    </select>
+    <br /><br />
+
+    <label for="keywords">Lisää vähintään yksi avainsana:</label><br />
+    {% for a in range(4) %} {% if a == 0 %} {{ a+1 }}.
+    <input type="text" id="keywords0" name="keywords0" required /> {% else %} {{
+    a+1 }}. <input type="text" id="keywords{{ a }}" name="keywords_rest" />
+    {% endif %}
+    <script>
+      $(function () {
+        autocomplete = [
+        {% for suggestion in  suggestions %}
+        "{{suggestion}}",
+        {%endfor%}
+      ]
+        $("#keywords{{a}}").autocomplete({
+          source: autocomplete,
         })
-      </script>
-      <br />
-      {% endfor %}
-    </p>
+      })
+    </script>
+    <br />
+    {% endfor %}
+
     <p>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
       <input type="submit" value="Lisää" />

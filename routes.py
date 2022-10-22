@@ -175,7 +175,6 @@ def user_update_question():
 
 @app.route("/user_remove_question", methods=["POST"])
 def user_remove_question():
-    print("HERE")
     question_id = request.form.get("question_id")
     questions.remove_question(question_id)            
     return redirect("/profile")
@@ -241,3 +240,23 @@ def profile():
                             user_questions = user_questions, 
                             user_answered = user_answered, 
                             user_position = user_position)
+
+@app.route("/messages", methods=["GET", "POST"])
+def messages():
+    user_messages = users.get_messages()
+    if request.method == "GET":
+        
+        return render_template("messages.html", messages=user_messages, get_name= users.get_name_for_id)
+    if request.method == "POST":
+        receiver = request.form.get("receiver")
+        receiver_id = users.get_id_for_name(receiver)
+        message = request.form.get("message")
+        
+        if receiver_id:
+            users.send_message(receiver_id[0], message)
+            flash(f"Viesti lähetetty käyttäjälle {receiver} ", "message success")
+
+        else:
+            flash(f"Käyttäjää {receiver} ei löytynyt, tarkista nimi", "message error")
+
+        return render_template("messages.html", messages=user_messages, get_name= users.get_name_for_id)

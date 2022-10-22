@@ -61,6 +61,7 @@ def toggle_admin(user_id):
         admin = result.fetchone()
         
     return admin
+
 def remove_user(user_id):
     if check_admin_rights():
             
@@ -71,4 +72,44 @@ def remove_user(user_id):
         user = result.fetchone()
     
     return user
+
+def get_id_for_name(user_name):
+
+    sql = "SELECT id FROM users WHERE name = :user_name"
+    result = db.session.execute(sql, {"user_name":user_name})
+    db.session.commit()
+    user_id = result.fetchone()
+
+    return user_id
+
+def get_name_for_id(user_id):
+
+    sql = "SELECT name FROM users WHERE id = :user_id"
+    result = db.session.execute(sql, {"user_id":user_id})
+    db.session.commit()
+    user_name = result.fetchone()
+
+    return user_name
+
+
+def send_message(receiver_id, message):
+    user_id = session.get("user_id")
+
+    try:
+        sql = """INSERT INTO messages (from_id, to_id, content)
+                 VALUES (:from_id, :to_id, :content)"""
+        db.session.execute(sql, {"from_id":user_id, "to_id":receiver_id, "content":message})
+        db.session.commit()
+    except:
+        return False
+    return True  
+
+def get_messages():
+    user_id = session.get("user_id")
+
+    sql = "SELECT * FROM messages WHERE to_id = :user_id"
+    result = db.session.execute(sql, {"user_id":user_id})
+    messages = result.fetchall()
+
+    return messages
 

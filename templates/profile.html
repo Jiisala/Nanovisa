@@ -7,7 +7,7 @@
   oikein: {{ user_answered[0] }}<br />
   väärin: {{ user_answered[1] }}<br />
   oikein / väärin suhde: {% if user_answered[0] == 0 %} 1 {% else %}
-  {{user_answered[0] / user_answered[1]}} {% endif %} <br /><br />
+  {{"%0.2f" | format(user_answered[0] / user_answered[1])}} {% endif %} <br /><br />
   Olet highscore listalla sijalla: {{ user_position[0] }} <br />
   <h3>Laatimasi kysmykset:</h3>
   {% for question in user_questions %}
