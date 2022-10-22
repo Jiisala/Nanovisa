@@ -1,37 +1,40 @@
 {% extends "layout.html" %} {% block content %}
-<h2>Kirjaudu sisään</h2>
-<p>testikäyttäjä: nimi: testi, salasana: testi</p>
-<p>testi admin: nimi testiadmin, salasana: testiadmin</p>
-
-<form action="/login" method="post">
-  Nimi: <br />
-  <input type="Text" name="username" required/>
-  <p>Salasana: <br /><input type="password" name="password" required/></p>
+<div class="basic">
+  <h2>Kirjaudu sisään</h2>
+  <p>testikäyttäjä: nimi: testi, salasana: testi</p>
+  <p>testi admin: nimi testiadmin, salasana: testiadmin</p>
   {% for message in get_flashed_messages(category_filter=["error_login"]) %}
-  <div class="message_error" >
-    {{ message }}
+  <div class="message_error">{{ message }}</div>
   {% endfor %}
-  <p>
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-    <input type="submit" value="Kirjaudu" />
-  </p>
-</form>
-<h2>tai luo uusi käyttäjä</h2>
+  <form action="/login" method="post">
+    Nimi: <br />
+    <input type="Text" name="username" required />
+    <p>Salasana: <br /><input type="password" name="password" required /></p>
 
-<form action="/newuser" method="post">
-  Nimi: <br />
-  <input type="Text" name="username" required/>
-  <p>Salasana: <br /><input type="password" name="password" required/></p>
-  <p>
-    Salasana uudelleen: <br /><input type="password" name="passwordAgain" required/>
-  </p>
+    <p>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <input type="submit" value="Kirjaudu" />
+    </p>
+  </form>
+  <h2>tai luo uusi käyttäjä</h2>
   {% for message in get_flashed_messages(category_filter=["error_new_user"]) %}
-  <div class="message_error" >
-    {{ message }}
-  {% endfor %}
-  <p>
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-    <input type="submit" value="Luo uusi" />
-  </p>
-</form>
+  <div class="message_error">{{ message }} {% endfor %}</div>
+  <form action="/newuser" method="post">
+    Nimi: <br />
+    <input type="Text" name="username" required />
+    <p>Salasana: <br /><input type="password" name="password" required /></p>
+    <p>
+      Salasana uudelleen: <br /><input
+        type="password"
+        name="passwordAgain"
+        required
+      />
+    </p>
+
+    <p>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <input type="submit" value="Luo uusi" />
+    </p>
+  </form>
+</div>
 {% endblock %}

@@ -1,40 +1,40 @@
-{% extends "layout.html" %} {% block content %} 
-{% set score =[] %} 
-{% for i in range(1, session.question_set.items() | length +1) %} 
-    {%if session.question_set[i]["new_question"] 
-    and session.question_set[i]["user_id"] != session.user_id 
-    and session.question_set[i]["answer"] == session.question_set[i]["player_answer"] %} 
-        {% set _ = score.append(1) %}
-    {% endif %} 
-{% endfor %} Sait tästä pelistä {{ score | length }} pistettä<br />
-{% if user_score | length > 0 %} Yhteispisteesi ovat: {{ user_score[0] }}<br />
-{% endif %} {% if position | length > 0 %} Olet ranking listan sijalla:
-{{ position[0] +1 }} {% endif %}
-<div>
-  <br />
-  Tämän kierroksen kysymykset:
-  <br />
-  {% for i in range (1, session.question_set.items() | length +1)  %}
+{% extends "layout.html" %} {% block content %} {% set score =[] %}
+<div class="basic">
+  {% for i in range(1, session.question_set.items() | length +1) %} {%if
+  session.question_set[i]["new_question"] and session.question_set[i]["user_id"]
+  != session.user_id and session.question_set[i]["answer"] ==
+  session.question_set[i]["player_answer"] %} {% set _ = score.append(1) %} {%
+  endif %} {% endfor %} Sait tästä pelistä
+  <b>{{ score | length }}</b> pistettä<br />
+  {% if user_score | length > 0 %} Yhteispisteesi ovat:
+  <b>{{ user_score[0] }}</b><br />
+  {% endif %} {% if position | length > 0 %} Olet ranking listan sijalla:
+  <b>{{ position[0] +1 }}</b> {% endif %}
   <div>
-    {{ i }}: {{ session.question_set[i]["question"] }}<br />
-    vastasit: {{ session.question_set[i]["player_answer"] }}<br />
-    oikea vastaus oli: {{session.question_set[i]["answer"]}}<br />
+    <br />
+    Tämän kierroksen kysymykset:
+    <br />
+    {% for i in range (1, session.question_set.items() | length +1) %}
+    <div class="question">
+      <b>{{ i }}:</b> {{ session.question_set[i]["question"] }}<br /><br />
+      <b>vastasit:</b> {{ session.question_set[i]["choice"~session.question_set[i]["player_answer"]] }}<br /><br />
+      <b>oikea vastaus oli:</b> {{ session.question_set[i]["choice"~session.question_set[i]["answer"]] }}<br /><br />
 
-    {% if session.question_set[i]["new_question"] == false %} 
-        Koska olit vastannut samaan kysymykseen aiemmin, et voi saada tästä pisteitä. 
-    {% elif session.question_set[i]["user_id"] == session.user_id %} 
-        Koska tämä oli itse lisäämäsi kysymys, et voi saada tästä pistettä 
-    {% else %} 
-        Sait tästä kysymyksestä {{ session.question_set[i]["player_answer"] }} pistettä 
-    {% endif %}
+      {% if session.question_set[i]["user_id"] == session.user_id %} Koska tämä
+      oli itse lisäämäsi kysymys, et voi saada tästä pistettä {% elif
+      session.question_set[i]["new_question"] == false %} Koska olit vastannut
+      samaan kysymykseen aiemmin, et voi saada tästä pisteitä. {% else %} Sait
+      tästä kysymyksestä {{ session.question_set[i]["player_answer"] }} pistettä
+      {% endif %}
+    </div>
+    <form action="/flag_question" method="POST">
+      <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+      <input type="hidden" name="id" value="{{i}}" />
+      <input type="submit" value="VASTALAUSE!" />
+    </form>
+
+    <br />
+    {%endfor%}
   </div>
-  <form action="/flag_question" method="POST">
-    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
-    <input type="hidden" name="id" value="{{i}}" />
-    <input type="submit" value="VASTALAUSE!" />
-  </form>
-
-  <br />
-  {%endfor%}
 </div>
 {%endblock%}

@@ -1,17 +1,17 @@
 {%extends "layout.html"%} {% block content %}
-<div>
-    Olet esittämässä vastalauseen kysymykselle:  {{session.question_set[id|string]["question"]}}<br />
-    vastauksesi: {{ session.question_set[id|string]["player_answer"] }}<br />
-    Kysymykselle määritelty oikea vastaus oli: {{session.question_set[id|string]["answer"]}}<br />
+<div class="basic">
+    <b>Olet esittämässä vastalauseen kysymykselle: </b> {{session.question_set[id|int]["question"]}}<br /><br />
+    <b>vastauksesi:</b> {{ session.question_set[id|int]["choice"~session.question_set[id|int]["player_answer"]] }}<br /><br />
+    <b>Kysymykselle määritelty oikea vastaus oli: </b>{{ session.question_set[id|int]["choice"~session.question_set[id|int]["answer"]] }}<br /><br />
     
     Kun olet painanut vahvista-nappia kysymys lähetetään ylläpitäjille tarkistettavaksi. Tarkistuksen ajaksi kysymys poistetaan pelistä.<br/>
-    Ole ystävällinen ja anna tiivis sanallinen selvitys siitä miksi ilmoitit kysymyksen."
+    Ole ystävällinen ja anna tiivis sanallinen selvitys siitä miksi ilmoitit kysymyksen."<br /><br />
     <form action="/confirm_flag" method="post" id="tag_form">
         <textarea form="tag_form" id="reason" name="reason" rows="5", cols="50"
         placeholder='"Esim. vastaus on väärin, oikea vastaus on...", "tai mielestäni kysymys on hyvän tavan vastainen koska..."'></textarea> 
          
         <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
-        <input type="hidden" name="id" value="{{id}}" />
+        <input type="hidden" name="id" value="{{id}}" /><br/>
         <input type="submit" value="vahvista" />
 
 </div>

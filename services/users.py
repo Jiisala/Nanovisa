@@ -50,18 +50,16 @@ def check_admin_rights():
 def toggle_admin(user_id):
     
     if check_admin_rights():
+            
+        sql = """UPDATE users 
+        SET admin = NOT admin
+        WHERE id = :user_id
+        RETURNING admin"""
+                
+        result=db.session.execute(sql, {"user_id":user_id})
+        db.session.commit()
+        admin = result.fetchone()
         
-        try:
-            sql = """UPDATE users 
-            SET admin = NOT admin
-            WHERE id = :user_id
-            RETURNING admin"""
-                    
-            result=db.session.execute(sql, {"user_id":user_id})
-            db.session.commit()
-            admin = result.fetchone()
-        except:
-            return False
     return admin
 def remove_user(user_id):
     if check_admin_rights():

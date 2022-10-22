@@ -1,15 +1,15 @@
 {% extends "layout.html" %} {% block content %}
-<div>
+<div class="basic">
   <h3>Muokkaa kysymystä</h3>
   {% for message in get_flashed_messages(category_filter=["message error"]) %}
   <div class="message_error">{{ message }}</div>
-  {%endfor%} id = {{ question[0] }}
+  {%endfor%} <b>id = {{ question[0] }}</b> <br /><br />
   <form action="/updatequestion/{{question[0]}}" method="post">
     <textarea id="question" name="question" rows="5" cols="40" required>
 {{question[1]}}</textarea
     >
     <p>
-      vastausvaihtoehdot: <br />
+      <b>vastausvaihtoehdot:</b> <br />
       {% for a in range(2,6) %} {{a-1}}
       <input
         type="text"
@@ -21,11 +21,11 @@
       <br />
       {% endfor %}
     </p>
-    <label for="answer">Oikea vastaus: </label>
+    <label for="answer"><b>Oikea vastaus: </b></label>
     <p>
       <input type="number" name="answer" id="answer" value="{{question[6]}}" />
     </p>
-    <label for="keywords">avainsanat</label>
+    <label for="keywords"><b>Avainsanat:</b></label>
 
     <p>
       {% for a in range(4) %} {% if a == 0 %} {{ a+1 }}.
@@ -46,6 +46,8 @@
       {% endif %} {% endfor %}
       <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
       <input type="hidden" name="id" value="{{question[0]}}" />
+      <br />
+      <br />
       <input type="submit" value="submit" />
     </p>
   </form>

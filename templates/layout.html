@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-<head>
-  <title>NANOVISA</title>
+<html lang="fi">
+  <link rel="stylesheet" href="/static/main.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <head>
+    <title>NANOVISA</title>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 
-  <link
-    href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
-    rel="stylesheet"
-    type="text/css"
-  />
-</head>
+    <link
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
 
-<body>
-  <h1>NANOVISA</h1>
-  {% if session.user_id %} 
-    Olet kirjautunut käyttäjänimellä: {{ session.user_name }} 
-  {% endif %} 
-  {% include "navigation.html" %} {% block content %}{% endblock %}
-</body>
+  <body>
+    <div class="header">
+      <h1>NANOVISA</h1>
+    </div>
+    {% include "navigation.html" %}
+    <div class="container">{% block content %}{% endblock %}</div>
+  </body>
+</html>

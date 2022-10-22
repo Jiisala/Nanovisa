@@ -104,7 +104,6 @@ def results():
 def answered_question():
     id = request.form.get("id")
     question_id = session["question_set"][int(id)]["id"]
-    print("Q ID", question_id)
     question_user_id = session["question_set"][int(id)]["user_id"]
     answer = int(request.form.get("answer"))
     correct_or_not =  answer == int(session["question_set"][int(id)]["answer"])
@@ -134,11 +133,12 @@ def tag_question():
     return render_template("flag.html", id = id)
 
 @app.route("/confirm_flag", methods=["POST"])
-def confirm_tag():
-    id = request.form.get("id")
+def confirm_flag():
+    question_id = request.form.get("id")
     reason = request.form.get("reason")
     try:
-        questions.flag_question(id, reason)
+        print("routes", question_id, reason)
+        questions.flag_question(question_id,reason)
     except:
         print("error handling goes here, when I get around adding it")
     return render_template("results.html")
@@ -167,7 +167,6 @@ def deald_with_flagged_questions():
 @app.route("/updatequestion/<int:id>", methods=["GET", "POST"])
 def update_question(id):
     question_to_update = questions.get_one_question(id)
-    print ("BOOOOM", question_to_update)
     if request.method == "GET":
         return render_template("updatequestion.html", id = id, question = question_to_update)
     if request.method == "POST":
@@ -194,11 +193,13 @@ def update_question(id):
 def update_user():
     user_id = request.form.get("user_id")
     if request.form.get("action") == "oikeudet":
-        try:
-            admin_status = users.toggle_admin(user_id)
+        
+        admin_status = users.toggle_admin(user_id)
+        if admin_status:
             flash(f'Käyttäjän {user_id} ylläpito oikeus on nyt: {admin_status}', "message success")
-        except:
-            flash("Syystä tai toisesta ylläpitäjän statusta ei voitu päivittää", "message_error")
+        else:
+            print("HERE")
+            flash(f"Käyttäjää {user_id} ei löytynyt, tarkista ID", "message error")
             
 
     if request.form.get("action") == "poista":
@@ -206,7 +207,7 @@ def update_user():
             users.remove_user(user_id)
             flash(f'Käyttäjän {user_id} on nyt poistettu', "message success")
         except:
-            flash("Syystä tai toisesta käyttäjää ei voitu poistaa", "message_error")
+            flash("Syystä tai toisesta käyttäjää ei voitu poistaa", "message error")
                 
     return redirect("/admin")
 

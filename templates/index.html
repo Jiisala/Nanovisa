@@ -1,19 +1,30 @@
 {%extends "layout.html"%} {% block content %}
-<p>
-  Tässä voit valita sopivat parametrit pelillesi
+<div class="basic">
+  Valitse parametrit pelillesi: <br /><br />
   <form action="/game_start" method="post">
-  Kysymysten määrä (1-20): <input type="number" id="how_many" name="how_many" min="1" max="20" required> <br/>
-    <br/>
-    Kirjoita toivomasi aiheet. Mikäli aiheista ei ole kysymyksiä tai et kirjoita yhtään ehdotusta valitaan aiheet satunnaisesti: <br/>
-    {%for a in range(4)%} 
-    {{a+1}}. <input type="text" id="keywords{{a}}" name="keywords" />
-    
+    Kysymysten määrä (1-20):
+    <input
+      type="number"
+      id="how_many"
+      name="how_many"
+      min="1"
+      max="20"
+      required
+    />
+    <br />
+    <br />
+    Kirjoita toivomasi aiheet. Mikäli aiheista ei ole kysymyksiä, tai et
+    kirjoita yhtään ehdotusta valitaan aiheet satunnaisesti: <br />
+    <br />
+    {%for a in range(4)%} {{a+1}}.
+    <input type="text" id="keywords{{a}}" name="keywords" />
+
     <script>
-      
+
       $(function () {
       autocomplete = [
-        {% for suggestion in  suggestions %} 
-        "{{suggestion}}", 
+        {% for suggestion in  suggestions %}
+        "{{suggestion}}",
         {%endfor%}
       ]
         $("#keywords{{a}}").autocomplete({
@@ -23,14 +34,24 @@
     </script>
     <br />
     {%endfor%}
-  
-  Sisällytä omat<input type="checkbox" id="include_own" name="include_own"><br/>
-  Sisällytä jo kerran vastatut<input type="checkbox" id="include_answered" name="include_answered"><br/>
-  Täytä satunnaisilla? <input type="checkbox" id="fill_with_random" name="fill_with_random"><br/>
-  <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
-  <input type="submit" value="Aloita peli" />
-
-
+    <br />
+    <div class="wrapper">
+      <label class="clickable_label">
+        <input type="checkbox" id="include_own" name="include_own" />
+        <div>Sisältää myös omia kysymyksiä</div>
+      </label>
+      <label class="clickable_label">
+        <input type="checkbox" id="include_answered" name="include_answered" />
+        <div>Sisältää myös jo vastattuja kysymyksiä:</div>
+      </label>
+      <label class="clickable_label">
+        <input type="checkbox" id="fill_with_random" name="fill_with_random" />
+        <div>Täytä satunnaisilla</div>
+      </label>
+      <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+    </div>
+    <br />
+    <input type="submit" value="Aloita peli" />
   </form>
-</p>
+</div>
 {%endblock%}

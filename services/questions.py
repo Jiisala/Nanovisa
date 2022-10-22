@@ -429,8 +429,10 @@ def get_all_keywords():
     return suggestions
 
 def flag_question(id, reason):
+    print("here")
     user_id = session.get("user_id")
-    question_id = session["question_set"][id]["id"]
+    question_id = session["question_set"][int(id)]["id"]
+    print("UID, QUID", user_id, question_id)
     try:
         sql="""INSERT INTO flagged_questions (question_id, flagger_id, reason)
             VALUES(:question_id, :user_id, :reason)"""

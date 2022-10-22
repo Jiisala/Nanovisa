@@ -1,0 +1,153 @@
+body {
+  background-color: peachpuff;
+}
+nav {
+  margin: auto;
+  max-width: 80em;
+  background-color: peachpuff;
+  padding: 10px;
+  border: solid;
+  border-color: papayawhip;
+}
+nav ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+  overflow: hidden;
+}
+nav li {
+  float: left;
+}
+a {
+  display: block;
+  padding: 10px;
+  border-radius: 25px;
+  border: solid transparent;
+  background-color: peachpuff;
+}
+a:hover {
+  background-color: papayawhip;
+  color: black;
+}
+a:visited {
+  color: black;
+}
+.header {
+  margin: auto;
+  max-width: 80em;
+  text-align: center;
+  padding: 10px;
+  background-color: peachpuff;
+  border-radius: 20px 20px 0px 0px;
+
+  border: solid;
+  border-color: papayawhip;
+}
+
+.container {
+  margin: auto;
+  max-width: 80em;
+  border-radius: 0px 0px 25px 25px;
+  background-color: papayawhip;
+  padding: 10px;
+  border: solid;
+  border-color: papayawhip;
+}
+.basic {
+  text-align: center;
+  word-wrap: break-word;
+  hyphens: auto;
+
+  margin: auto;
+  max-width: 70em;
+}
+.question {
+  margin: auto;
+  max-width: 60em;
+  border-radius: 25px;
+  border-style: solid;
+  border-color: peachpuff;
+  background-color: antiquewhite;
+  padding: 20px;
+  text-align: left;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+.wrapper {
+  margin: auto;
+  max-width: 60em;
+
+  display: grid;
+  justify-items: center;
+
+  grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
+  grid-column-gap: 0.3em;
+}
+.clickable_label {
+  padding: 5px;
+}
+.clickable_label > input {
+  /* HIDE RADIO */
+  visibility: hidden; /* Makes input not-clickable */
+  position: absolute; /* Remove input from document flow */
+}
+.clickable_label > input + div {
+  /* DIV STYLES */
+  padding: 5px;
+  cursor: pointer;
+  text-align: center;
+  word-wrap: break-word;
+  hyphens: auto;
+  border: solid peachpuff;
+  border-radius: 25px;
+}
+.clickable_label > input + div:hover {
+  /* DIV STYLES */
+
+  border: solid peachpuff;
+  border-radius: 25px;
+}
+.clickable_label > input:checked + div {
+  /* (RADIO CHECKED) DIV STYLES */
+
+  background-color: lightyellow;
+  border: solid peachpuff;
+  border-radius: 25px;
+}
+input[type="submit"] {
+  max-width: 100%;
+  padding: 5px 10px;
+  width: fit-content;
+  background-color: lightyellow;
+  border: solid peachpuff;
+  border-radius: 25px;
+}
+input[type="submit"]:hover {
+  background-color: peachpuff;
+  border: solid peachpuff;
+  border-radius: 25px;
+}
+
+.message_success {
+  padding: 5px;
+  margin: auto;
+  width: fit-content;
+  background-color: peachpuff;
+  border: 2px solid palegreen;
+  text-align: center;
+  word-wrap: break-word;
+  hyphens: auto;
+  border-radius: 25px;
+}
+
+.message_error {
+  padding: 5px;
+  margin: auto;
+  width: fit-content;
+  background-color: peachpuff;
+  border: 2px solid palevioletred;
+  text-align: center;
+  word-wrap: break-word;
+  hyphens: auto;
+  border-radius: 25px;
+}

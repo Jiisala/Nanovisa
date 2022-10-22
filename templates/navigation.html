@@ -1,12 +1,17 @@
 <header>
   {% if session.user_id%}
   <nav>
-    <a href="/">Etusivu</a>
-    <a href="/newquestion">lisää uusi kysymys</a>
-    <a href="/highscores">highscore</a>
-    <a href="/logout">kirjaudu ulos</a>
-    {% if is_admin() %} <a href="/admin">ylläpito</a> 
-    {% endif %}
+    <ul>
+      <li><a href="/">Etusivu</a></li>
+      <li><a href="/newquestion">lisää uusi kysymys</a></li>
+      <li><a href="/highscores">highscore</a></li>
+      <li><a href="/logout">kirjaudu ulos</a></li>
+      {% if is_admin() %}
+      <li><a href="/admin">ylläpito</a></li>
+      {% endif %} {% if session.user_id %}
+      <li><a href="/profile">{{ session.user_name }}</a></li>
+      {% endif %}
+    </ul>
   </nav>
   {% endif %}
 </header>

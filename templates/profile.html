@@ -1,5 +1,18 @@
-<h2>Tähän tulee käyttäjän profiili OTSIKKONA käyttäjän nimi</h2>
+{% extends "layout.html" %} {% block content %}
+<div class="basic">
+  <h3>{{session.get("user_name")}}</h3>
 
-<p>LISTA LISÄÄMISTÄNI KYSYMYKSISTÄ sekä MUOKKAA POISTA NAPPI</p>
+  Laatimasi kysmykset: <br />
+  Tilastoja: <br />
+  olet vastannut x kysymykseen. <br />
+  oikein: <br />
+  väärin: <br />
+  suhde: <br />
+  Olet highscore listalla sijalla: <br />
+  {% endblock %}
+  <h2>Tähän tulee käyttäjän profiili OTSIKKONA käyttäjän nimi</h2>
 
-<p>Tilastoja oikeista ja vääristä vastauksista kategorioittain jne</p>
+  <p>LISTA LISÄÄMISTÄNI KYSYMYKSISTÄ sekä MUOKKAA POISTA NAPPI</p>
+
+  <p>Tilastoja oikeista ja vääristä vastauksista kategorioittain jne</p>
+</div>

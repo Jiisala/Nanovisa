@@ -1,8 +1,10 @@
 {% extends "layout.html" %} {% block content %}
-<div>
+<div class="basic">
   <h3>PARHAAT PISTEET</h3>
   {% for i in range(highscorelist | length) %}
-  <div>{{ i+1 }}. {{ highscorelist[i][1] }} {{ highscorelist[i][2] }}</div>
+  <div>
+    <b>{{ i+1 }}.</b> {{ highscorelist[i][1] }} {{ highscorelist[i][2] }}
+  </div>
   {% endfor %}
 </div>
 {% endblock %}
