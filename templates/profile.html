@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block content %}
 <div class="basic">
   <h2>{{session.get("user_name")}}</h2>
-  <h3>Tilastoja:</h3>
+  <h3>Tietoja:</h3>
   {% if user_answered | length > 1 %} olet vastannut yhteensä {{user_answered[0]
   +user_answered[1]}} kysymykseen.
   <br /><br />
