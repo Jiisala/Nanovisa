@@ -1,19 +1,19 @@
-from app import app
 from flask import flash, session
 from flask import redirect, render_template, request
+from app import app
 from services import users
 from services import questions
 
 @app.context_processor
 def context_processor():
-    return dict(is_admin =users.check_admin_rights)
+    return dict(is_admin= users.check_admin_rights)
 
 @app.route("/")
 def index():
     if not users.check_logged():
         return render_template("login.html")
     suggestions = questions.get_all_keywords()
-    return render_template("index.html", suggestions = suggestions) 
+    return render_template("index.html", suggestions= suggestions)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -44,25 +44,25 @@ def login_user():
         flash("Nimen maksimipituus on 20 merkkiä", "error_new_user")
     elif not users.new_user(username, password):
         flash("Syystä tai toisesta käyttäjän luominen ei onnistunut", "error_new_user")
-    
+
     return redirect("/")
 
 @app.route("/newquestion", methods=["GET", "POST"])
 def new_question():
-    
+
     if not users.check_logged():
         return render_template("login.html")
     if request.method == "GET":
         suggestions = questions.get_all_keywords()
-        
-        return render_template("newquestion.html", suggestions = suggestions)
+
+        return render_template("newquestion.html", suggestions= suggestions)
     if request.method == "POST":
-        
+
         question =request.form["question"]
         answer = request.form["answer"]
         choices = request.form.getlist("choice")
         keywords_rest = request.form.getlist("keywords_rest")
-        keywords = [request.form["keywords0"].strip()] 
+        keywords = [request.form["keywords0"].strip()]
         for word in keywords_rest:
             keywords.append(word.strip())
 
@@ -70,7 +70,7 @@ def new_question():
             flash("Syystä tai toisesta kysymyksen lisääminen meni pieleen", "error")
             return render_template("newquestion.html")
         suggestions = questions.get_all_keywords()
-        flash(f'Kysymys:" {question} "lisätty.', "message success")            
+        flash(f'Kysymys:" {question} "lisätty.', "message success")
         return render_template("newquestion.html", suggestions= suggestions)
 
 @app.route("/game_start", methods=["POST"])
@@ -81,7 +81,7 @@ def full_game():
     include_own= request.form.get("include_own")
     include_answered= request.form.get("include_answered")
     fill_with_random = request.form.get("fill_with_random")
-    
+
     questions.get_new_question_set(how_many, keywords, include_own, include_answered, fill_with_random )
     return redirect("game/0")
 
@@ -92,7 +92,7 @@ def one_question(id):
     if id >= len(session.get("question_set")):
         return redirect("/results")
     id +=1
-    return render_template("game.html", id=id)    
+    return render_template("game.html", id=id)
 
 @app.route("/results")
 def results():
@@ -102,7 +102,7 @@ def results():
     position = questions.get_user_position()
     admin=users.check_admin_rights()
     return render_template("results.html", user_score = user_score, position = position, admin= admin)
-    
+
 @app.route("/answer", methods=["POST"])
 def answered_question():
     id = request.form.get("id")
@@ -110,18 +110,18 @@ def answered_question():
     question_user_id = session["question_set"][int(id)]["user_id"]
     answer = int(request.form.get("answer"))
     correct_or_not =  answer == int(session["question_set"][int(id)]["answer"])
-    
+
     if session.get("user_id") == question_user_id or users.check_admin_rights():
         session["question_set"][int(id)]["player_answer"] = answer
         session["question_set"][int(id)]["new_question"] = False
-      
+
     elif questions.question_answered(question_id, correct_or_not):
         session["question_set"][int(id)]["player_answer"] = answer
         session["question_set"][int(id)]["new_question"] = True
     else:
         session["question_set"][int(id)]["player_answer"] = answer
         session["question_set"][int(id)]["new_question"] = False
-      
+
     return redirect(f"/game/{id}")
 
 @app.route("/highscores")
@@ -136,6 +136,10 @@ def tag_question():
     id = request.form.get("id")
     return render_template("flag.html", id = id)
 
+# I'm pretty sure that error handling here is completely uneccesary.
+# The flashed message is not shown anywhere.
+# However I can't remember why I added it and I'm afraid that if
+# I remove it, something will break.
 @app.route("/confirm_flag", methods=["POST"])
 def confirm_flag():
     question_id = request.form.get("id")
@@ -143,7 +147,8 @@ def confirm_flag():
     try:
         questions.flag_question(question_id,reason)
     except:
-        print("error handling goes here, when I get around adding it")
+        flash("Syystä tai toisesta vastalauseen esittäminen epäonnistui", "error")
+
     return render_template("results.html")
 
 @app.route("/admin")
@@ -164,71 +169,75 @@ def deald_with_flagged_questions():
             questions.remove_question(int(action[1]))
         if action[0] == "update_question":
             return redirect (f"updatequestion/{action[1]}")
-                
+
     return redirect("/admin")
 
 @app.route("/user_update_question", methods=["POST"])
 def user_update_question():
     question_id = request.form.get("question_id")
-                
+
     return redirect(f"/updatequestion/{question_id}")
 
 @app.route("/user_remove_question", methods=["POST"])
 def user_remove_question():
     question_id = request.form.get("question_id")
-    questions.remove_question(question_id)            
+    questions.remove_question(question_id)
     return redirect("/profile")
 
 @app.route("/updatequestion/<int:id>", methods=["GET", "POST"])
 
 def update_question(id):
     question_to_update = questions.get_one_question(id)
-    
+
     if request.method == "GET":
-        
+
         if users.check_admin_rights() or question_to_update[11] == session.get("user_id"):
-            return render_template("updatequestion.html", id = id, question = question_to_update, is_admin = users.check_admin_rights)
+            return render_template("updatequestion.html",
+                                    id= id,
+                                    question= question_to_update,
+                                    is_admin = users.check_admin_rights
+                                    )
     if request.method == "POST":
-        
+
         question = request.form["question"]
         answer = request.form["answer"]
         choices = request.form.getlist("choice")
         keywords_rest = request.form.getlist("keywords_rest")
-        keywords = [request.form["keywords0"].strip()] 
+        keywords = [request.form["keywords0"].strip()]
         for word in keywords_rest:
             keywords.append(word.strip())
 
-        if not questions.update_question(question_to_update[0],question_to_update[11] ,question, choices, answer, keywords):
+        if not questions.update_question(question_to_update[0], question_to_update[11] ,question, choices, answer, keywords):
             flash("Syystä tai toisesta kysymyksen päivittäminen meni pieleen", "error")
             return render_template("updatequestion.html", id = id, question = question_to_update)
         if users.check_admin_rights():
             questions.remove_flag(id)
-            flash(f'Kysymys: {question_to_update[0]} päivitetty.', "message success")            
+            flash(f'Kysymys: {question_to_update[0]} päivitetty.', "message success")
             return redirect("/admin")
         else:
-            return redirect("/profile")        
+            return redirect("/profile")
     return redirect("/")
 
 @app.route("/updateuser", methods=["POST"])
 def update_user():
     user_id = request.form.get("user_id")
     if request.form.get("action") == "oikeudet":
-        
+
         admin_status = users.toggle_admin(user_id)
         if admin_status:
             flash(f'Käyttäjän {user_id} ylläpito oikeus on nyt: {admin_status}', "message success")
         else:
             flash(f"Käyttäjää {user_id} ei löytynyt, tarkista ID", "message error")
-            
+
 
     if request.form.get("action") == "poista":
-        
+
         user =users.remove_user(user_id)
         if user:
             flash(f'Käyttäjä {user_id} on nyt poistettu', "message success")
         else:
             flash(f"Käyttäjää {user_id} ei löytynyt, tarkista ID", "message error")
-                
+
     return redirect("/admin")
 
 @app.route("/profile")
@@ -237,21 +246,21 @@ def profile():
     user_answered = questions.count_questions_answered_by()
     user_position = questions.get_user_position()
     return render_template("profile.html",
-                            user_questions = user_questions, 
-                            user_answered = user_answered, 
+                            user_questions = user_questions,
+                            user_answered = user_answered,
                             user_position = user_position)
 
 @app.route("/messages", methods=["GET", "POST"])
 def messages():
     user_messages = users.get_messages()
     if request.method == "GET":
-        
+
         return render_template("messages.html", messages=user_messages, get_name= users.get_name_for_id)
     if request.method == "POST":
         receiver = request.form.get("receiver")
         receiver_id = users.get_id_for_name(receiver)
         message = request.form.get("message")
-        
+
         if receiver_id:
             users.send_message(receiver_id[0], message)
             flash(f"Viesti lähetetty käyttäjälle {receiver} ", "message success")

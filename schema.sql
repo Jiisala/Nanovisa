@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS questions CASCADE;
 DROP TABLE IF EXISTS answers_given;
-DROP TABLE IF EXISTS users_x_questions;
 DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS flagged_questions;
 

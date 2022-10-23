@@ -1,6 +1,6 @@
-from db import db
-from flask import request, session
+from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
+from db import db
 
 def login(name, password):
     sql = "SELECT id, name, password, admin FROM users WHERE name=:name"
@@ -10,7 +10,6 @@ def login(name, password):
         return False
     if not check_password_hash(user.password, password):
         return False
-    print(user.id, user.name)
     session["user_id"] = user.id
     session["user_name"] = user.name
     return True
@@ -34,7 +33,7 @@ def new_user(name, password, admin=False):
         db.session.commit()
     except:
         return False
-    return login(name, password)  
+    return login(name, password)
 
 def check_admin_rights():
     user_id = session.get("user_id")
@@ -44,33 +43,33 @@ def check_admin_rights():
         is_admin = result.fetchone()
     except:
         return False
-        
+
     return is_admin[0]
 
 def toggle_admin(user_id):
-    
+
     if check_admin_rights():
-            
-        sql = """UPDATE users 
+
+        sql = """UPDATE users
         SET admin = NOT admin
         WHERE id = :user_id
         RETURNING admin"""
-                
+
         result = db.session.execute(sql, {"user_id":user_id})
         db.session.commit()
         admin = result.fetchone()
-        
+
     return admin
 
 def remove_user(user_id):
     if check_admin_rights():
-            
+
         sql = "DELETE FROM users WHERE id = :user_id RETURNING id"
-                
+
         result = db.session.execute(sql, {"user_id":user_id})
         db.session.commit()
         user = result.fetchone()
-    
+
     return user
 
 def get_id_for_name(user_name):
@@ -102,7 +101,7 @@ def send_message(receiver_id, message):
         db.session.commit()
     except:
         return False
-    return True  
+    return True
 
 def get_messages():
     user_id = session.get("user_id")
@@ -112,4 +111,3 @@ def get_messages():
     messages = result.fetchall()
 
     return messages
-

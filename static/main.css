@@ -94,12 +94,10 @@ a:visited {
   padding: 5px;
 }
 .clickable_label > input {
-  /* HIDE RADIO */
-  visibility: hidden; /* Makes input not-clickable */
-  position: absolute; /* Remove input from document flow */
+  visibility: hidden;
+  position: absolute;
 }
 .clickable_label > input + div {
-  /* DIV STYLES */
   padding: 10px;
   cursor: pointer;
   text-align: center;
@@ -108,14 +106,10 @@ a:visited {
   border: solid peachpuff;
 }
 .clickable_label > input + div:hover {
-  /* DIV STYLES */
-
   border: solid peachpuff;
   border-radius: 25px;
 }
 .clickable_label > input:checked + div {
-  /* (RADIO CHECKED) DIV STYLES */
-
   background-color: lightyellow;
   border: solid peachpuff;
 }
