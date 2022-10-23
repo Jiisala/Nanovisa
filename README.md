@@ -52,6 +52,7 @@ Mikäli joskus palaan tämän pariin:
 
 - Kattava testaus
 - Ulkoasun hiominen
+- Käyttäjän salasanan vahvuus on nyt täysin käyttäjän vastuulla, esimerkiksi yhden kirjaimen salasana hyväksytään. Täma on tietenkin korjattava ensitilassa jos ohjelma menee laajempaan käyttöön.
 - Viesti toiminnon parantaminen, tällaisenaan se on hieman torso, viestejä ei esim. ketjuteta järkevästi, eikä niitä voi poistaa. 
 - Koodin refaktorointi, toteutin tätä tehdessäni ensimmäisen sovellukseni python/flask/jinja yhdistelmällä ja opin tehdessäni runsaasti siitä kuinka asiat kannattaa toteuttaa. Tästä johtuen, alkupäässä kirjoittamani koodin seassa on joitakin kohtia, joista tiedän jo kuinka tehdä ne fiksummin. Koska kyseessä on aikataulutettu kurssi ja deadline on nyt, se jääköön tulevasuuteen.
 - Ja tietysti niiden mahdollisten bugien korjaus.
