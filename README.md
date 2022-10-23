@@ -3,19 +3,25 @@
 NanoVisa on tietokilpailusovellus jossa käyttäjät voivat itse luoda kysymyksiä ja vastata toistensa kysymyksiin. Kysymyksistä voi luoda haluamansa pituisen setin ja avainsanoilla voi rajata kysymysvalikoimaa koskemaan tiettyjä aihealueita.
 
 Sovellus on testattavissa Herokussa
+Herokuun on luotu testi käyttäjä, sekä testi admin. Voit toki myös luoda oman käyttäjän, se on jopa suositeltavaa. Uutta admin-käyttäjää ei voi luoda sovelluksessa suoraan.
+### HUOM! testi admin: nimi testiadmin, salasana testiadmin 
+
 [https://nanovisa.herokuapp.com/](https://nanovisa.herokuapp.com/)
 
 Tämän hetkinen tila:
 
-Projektin toiminnallisuus on toteutettu suurimmaksi osaksi, ulkoasun siistimistä ei ole vielä edes aloitettu
+Projektin toiminnallisuus on toteutettu suurimmaksi osaksi, ulkoasun siistimistä ei ole vielä edes aloitettu.
+
 
 - Käyttäjän lisääminen ja sisäsisäänkirjautuminen toimivat. Ne noudattelevat esimerkkisovelluksen logiikkaa, mutta oletan ettei ole tarkoitus keksiä pyörää uudestaan.
 - Kysymyksiä voi lisätä.
+- kysymyksiä lisätessä ja kysymys-settejä luodessa, ohjelma antaa ehdotuksia avainsana kenttiin kun alat kirjoittamaan. Nämä perustuvat tietokantaan jo lisättyihin avainsanoihin.
 - Kysymys-settejä voi muodostaa ja niihin voi vastata.
 - Pistelasku toimii melkein, bugi jonka olen jo yksilöinyt vaivaa vielä Herokussa olevaa versiota. Yritin tallettaa liikaa dataa session dataan ja osa ei tallennu. Otin käyttöön Flask-sessions paketin, joka korjasi ongelman omalla koneellani. En uskaltanut viime hetkellä ladata herokuun uutta versiota, sillä en ollut varma että se toimii myös siellä.
 - Highscore lista toimii
 - kysymyksiä voi ilmiantaa ylläpidolle tarkistettaviksi
 - ylläpitäjä voi tarkistaa kysymyksiä ja poistaa niitä.
+
 
 Seuraavat askeleet:
 
