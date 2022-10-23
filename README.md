@@ -19,6 +19,7 @@ Loppupalautus:
 
 Projektin tämä versio on valmis.
 
+
 - Käyttäjän lisääminen ja sisäsisäänkirjautuminen toimivat.
 - Kysymyksiä voi lisätä.
 - Kysymyksiä lisätessä ja kysymys-settejä luodessa, ohjelma antaa ehdotuksia avainsana kenttiin kun alat kirjoittamaan. Nämä perustuvat tietokantaan jo lisättyihin avainsanoihin.
@@ -32,14 +33,20 @@ Projektin tämä versio on valmis.
 - Käyttäjä voi poistaa ja muokata omia kysymyksiään.
 - Käyttäjät voivat lähettää viestejä toisilleen ja ylläpidolle.
 
+
 - Ylläpitäjä voi tarkistaa kysymyksiä ja poistaa, tai muokata niitä.
 - Ylläpitäjä voi vaihtaa käyttäjän roolia ylläpitäjäksi, tai toisin päin. Tämä tapahtuu käyttäjän ID:n avulla. Sen voisi myös tehdä käyttäjän nimellä, toiminnallisuus siihen on luotu samalla kuin viestien lähettäminen, mutta en ehtinyt ottaa sitä käyttöön tässä kohtaa ohjelmaa.
+
 
 - Ohjelman ulkoasu on toteutettu CSS:llä ilman ulkoisia ulkoasukirjastoja.
 - Ohjelmassa ei ole bugeja joista tietäisin, toisaalta sillä testaus ei kuulunut kurssin aihealueisiin, en sitä myöskään toteuttanut. On siis aivan mahdollista että niitä siellä siis lurkkii piiloissaan.
 
+
 - Ohjelman toimintaa on testattu käsin chrome ja firefox selaimilla. Chromella eivät tavuviivat toimi sanoja jakaessa. Tämä on ilmeisesti tunnettu ongelma jolle en löytänyt järkevää ratkaisua. Ruutu myös välähtää ikävästi kun kysymykseen vastatessa ladataan uutta sivua. Firefoxilla näitä ongelmia ei ole. 
 - Ohjelma on myös testattu ja todettu toimivaksi kännykällä (sony/android).
+
+
+- Vscoden automaattimuotoilu tuntui vihaavan Jinjaa. Pyrin pitämään myös HTML-tiedostot jokseenkin luettavina, mutta ne joissa on enemmän Jinja-koodia ovat ehkä silti hieman vaikeaselkoisia.
 
 Mikäli joskus palaan tämän pariin:
 
@@ -49,7 +56,8 @@ Mikäli joskus palaan tämän pariin:
 - Koodin refaktorointi, toteutin tätä tehdessäni ensimmäisen sovellukseni python/flask/jinja yhdistelmällä ja opin tehdessäni runsaasti siitä kuinka asiat kannattaa toteuttaa. Tästä johtuen, alkupäässä kirjoittamani koodin seassa on joitakin kohtia, joista tiedän jo kuinka tehdä ne fiksummin. Koska kyseessä on aikataulutettu kurssi ja deadline on nyt, se jääköön tulevasuuteen.
 - Ja tietysti niiden mahdollisten bugien korjaus.
 
-### -- Tästä alaspäin alkuperäinen suunnitelma --
+
+### -- Tästä alaspäin alkuperäinen suunnitelma, joka on tehty kurssin viikolla 1 --
 
 Alustava hahmotelma sovelluksesta. Tämä tulee varmasti elämään projektin edetessä.
 
