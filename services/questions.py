@@ -1,3 +1,4 @@
+from re import A
 import re
 from db import db
 from flask import session
@@ -416,8 +417,9 @@ def count_questions_answered_by():
              GROUP BY user_id"""
     result = db.session.execute(sql, {"user_id":user_id})
     answers = result.fetchone()
-    return answers[1:]
-
+    if answers:
+        return answers[1:]
+    return []
 def get_user_score():
     user_id = session.get("user_id")
     try:
