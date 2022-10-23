@@ -3,34 +3,51 @@
 NanoVisa on tietokilpailusovellus jossa käyttäjät voivat itse luoda kysymyksiä ja vastata toistensa kysymyksiin. Kysymyksistä voi luoda haluamansa pituisen setin ja avainsanoilla voi rajata kysymysvalikoimaa koskemaan tiettyjä aihealueita.
 
 Sovellus on testattavissa Herokussa
-Herokuun on luotu testi käyttäjä, sekä testi admin. Voit toki myös luoda oman käyttäjän, se on jopa suositeltavaa. Uutta admin-käyttäjää ei voi luoda sovelluksessa suoraan.
-### HUOM! testi admin: nimi testiadmin, salasana testiadmin 
+Herokuun on luotu testi käyttäjä, sekä testi admin. Voit toki myös luoda oman käyttäjän, se on jopa suositeltavaa. Uutta admin-käyttäjää ei voi luoda sovelluksessa suoraan. Ylläpitäjä voi lisätä toiselle käyttäjälle ylläpito-oikeudet (tai poistaa ne). Tämä tapahtuu käyttäjän ID:n avulla. 
+
+### HUOM! 
+### testikäyttäjä: nimi testi, salasana testi
+### testi ylläpitäjä: nimi testiadmin, salasana testiadmin 
+ 
+testikäyttäjän ID on 1.
+
+testiadmin ID on 9, älä poista ylläpitäjän oikeuksia tältä käyttäjältä, ellet ole ensin lisännyt niitä jollekkin toiselle. Muutoin ainoa tapa luoda uusi ylläpitäjä on suoraan tietokantaa muokkaamalla.
 
 [https://nanovisa.herokuapp.com/](https://nanovisa.herokuapp.com/)
 
-Tämän hetkinen tila:
+Loppupalautus:
 
-Projektin toiminnallisuus on toteutettu suurimmaksi osaksi, ulkoasun siistimistä ei ole vielä edes aloitettu.
+Projektin tämä versio on valmis.
 
-
-- Käyttäjän lisääminen ja sisäsisäänkirjautuminen toimivat. Ne noudattelevat esimerkkisovelluksen logiikkaa, mutta oletan ettei ole tarkoitus keksiä pyörää uudestaan.
+- Käyttäjän lisääminen ja sisäsisäänkirjautuminen toimivat.
 - Kysymyksiä voi lisätä.
-- kysymyksiä lisätessä ja kysymys-settejä luodessa, ohjelma antaa ehdotuksia avainsana kenttiin kun alat kirjoittamaan. Nämä perustuvat tietokantaan jo lisättyihin avainsanoihin.
+- Kysymyksiä lisätessä ja kysymys-settejä luodessa, ohjelma antaa ehdotuksia avainsana kenttiin kun alat kirjoittamaan. Nämä perustuvat tietokantaan jo lisättyihin avainsanoihin.
 - Kysymys-settejä voi muodostaa ja niihin voi vastata.
-- Pistelasku toimii melkein, bugi jonka olen jo yksilöinyt vaivaa vielä Herokussa olevaa versiota. Yritin tallettaa liikaa dataa session dataan ja osa ei tallennu. Otin käyttöön Flask-sessions paketin, joka korjasi ongelman omalla koneellani. En uskaltanut viime hetkellä ladata herokuun uutta versiota, sillä en ollut varma että se toimii myös siellä.
-- Highscore lista toimii
-- kysymyksiä voi ilmiantaa ylläpidolle tarkistettaviksi
-- ylläpitäjä voi tarkistaa kysymyksiä ja poistaa niitä.
+- Pistelasku toimii, pisteitä saa vain muiden lisäämistä kysymyksistä, joihin käyttäjä vastaa ensimmäisen kerran.
+- Ylläpitäjät eivät saa pisteitä vaikka pelaisivat.
+- Highscore lista toimii.
+- Pelin jälkeen näytetään tulos-sivu josta näkee sen kierroksen kysymykset ja ansaitut pisteet.
+- Tulos-sivulla voi myös ilmiantaa kysymyksiä ylläpidolle tarkistettaviksi.
+- Käyttäjällä on profiilisivu jossa näkee tietoja pelatuista peleistä, sekä käyttäjän itsensä lisäämät kysymykset.
+- Käyttäjä voi poistaa ja muokata omia kysymyksiään.
+- Käyttäjät voivat lähettää viestejä toisilleen ja ylläpidolle.
 
+- Ylläpitäjä voi tarkistaa kysymyksiä ja poistaa, tai muokata niitä.
+- Ylläpitäjä voi vaihtaa käyttäjän roolia ylläpitäjäksi, tai toisin päin. Tämä tapahtuu käyttäjän ID:n avulla. Sen voisi myös tehdä käyttäjän nimellä, toiminnallisuus siihen on luotu samalla kuin viestien lähettäminen, mutta en ehtinyt ottaa sitä käyttöön tässä kohtaa ohjelmaa.
 
-Seuraavat askeleet:
+- Ohjelman ulkoasu on toteutettu CSS:llä ilman ulkoisia ulkoasukirjastoja.
+- Ohjelmassa ei ole bugeja joista tietäisin, toisaalta sillä testaus ei kuulunut kurssin aihealueisiin, en sitä myöskään toteuttanut. On siis aivan mahdollista että niitä siellä siis lurkkii piiloissaan.
 
-- loput admin toiminnallisuudet
-- käyttäjän profiilisivu
-- ulkoasu
-- tällä hetkellä moni syötekenttä validoidaan vain selaimessa, olisi varmaan syytä validoida ne myös bäkkärin puolella
-- monesta kohdasta puuttuu vielä käyttäjälle annettu palaute toiminnasta
-- ja tietysti bugien korjaus
+- Ohjelman toimintaa on testattu käsin chrome ja firefox selaimilla. Chromella eivät tavuviivat toimi sanoja jakaessa. Tämä on ilmeisesti tunnettu ongelma jolle en löytänyt järkevää ratkaisua. Ruutu myös välähtää ikävästi kun kysymykseen vastatessa ladataan uutta sivua. Firefoxilla näitä ongelmia ei ole. 
+- Ohjelma on myös testattu ja todettu toimivaksi kännykällä (sony/android).
+
+Mikäli joskus palaan tämän pariin:
+
+- Kattava testaus
+- Ulkoasun hiominen
+- Viesti toiminnon parantaminen, tällaisenaan se on hieman torso, viestejä ei esim. ketjuteta järkevästi, eikä niitä voi poistaa. 
+- Koodin refaktorointi, toteutin tätä tehdessäni ensimmäisen sovellukseni python/flask/jinja yhdistelmällä ja opin tehdessäni runsaasti siitä kuinka asiat kannattaa toteuttaa. Tästä johtuen, alkupäässä kirjoittamani koodin seassa on joitakin kohtia, joista tiedän jo kuinka tehdä ne fiksummin. Koska kyseessä on aikataulutettu kurssi ja deadline on nyt, se jääköön tulevasuuteen.
+- Ja tietysti niiden mahdollisten bugien korjaus.
 
 ### -- Tästä alaspäin alkuperäinen suunnitelma --
 
