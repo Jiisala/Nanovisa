@@ -185,12 +185,12 @@ def user_remove_question():
     return redirect("/profile")
 
 @app.route("/updatequestion/<int:id>", methods=["GET", "POST"])
-
 def update_question(id):
     question_to_update = questions.get_one_question(id)
 
     if request.method == "GET":
-
+        if not users.check_logged():
+            return render_template("login.html")
         if users.check_admin_rights() or question_to_update[11] == session.get("user_id"):
             return render_template("updatequestion.html",
                                     id= id,
@@ -222,16 +222,13 @@ def update_question(id):
 def update_user():
     user_id = request.form.get("user_id")
     if request.form.get("action") == "oikeudet":
-
         admin_status = users.toggle_admin(user_id)
         if admin_status:
             flash(f'Käyttäjän {user_id} ylläpito oikeus on nyt: {admin_status}', "message success")
         else:
             flash(f"Käyttäjää {user_id} ei löytynyt, tarkista ID", "message error")
 
-
     if request.form.get("action") == "poista":
-
         user =users.remove_user(user_id)
         if user:
             flash(f'Käyttäjä {user_id} on nyt poistettu', "message success")
@@ -242,6 +239,8 @@ def update_user():
 
 @app.route("/profile")
 def profile():
+    if not users.check_logged():
+        return render_template("login.html")
     user_questions = questions.get_questions_by_user()
     user_answered = questions.count_questions_answered_by()
     user_position = questions.get_user_position()
@@ -254,7 +253,8 @@ def profile():
 def messages():
     user_messages = users.get_messages()
     if request.method == "GET":
-
+        if not users.check_logged():
+            return render_template("login.html")
         return render_template("messages.html", messages=user_messages, get_name= users.get_name_for_id)
     if request.method == "POST":
         receiver = request.form.get("receiver")
