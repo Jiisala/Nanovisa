@@ -30,8 +30,7 @@
       session.question_set[i]["user_id"] == session.user_id %} Koska tämä oli
       itse lisäämäsi kysymys, et voi saada tästä pistettä {% elif
       session.question_set[i]["new_question"] == false %} Koska olit vastannut
-      samaan kysymykseen aiemmin, et voi saada tästä pisteitä. {% else %} Sait
-      tästä kysymyksestä {{ session.question_set[i]["player_answer"] }} pistettä
+      samaan kysymykseen aiemmin, et voi saada tästä pisteitä.
       {% endif %}
     </div>
     <form action="/flag_question" method="POST">
