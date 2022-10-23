@@ -1,10 +1,26 @@
 {% extends "layout.html" %} {% block content %}
 <div class="basic">
   <h3>PARHAAT PISTEET</h3>
-  {% for i in range(highscorelist | length) %}
-  <div>
-    <b>{{ i+1 }}.</b> {{ highscorelist[i][1] }} {{ highscorelist[i][2] }}
-  </div>
-  {% endfor %}
+  <table>
+    <tr>
+      <th>#</th>
+      <th>Pelaaja</th>
+      <th>Pisteet</th>
+    </tr>
+    {% for i in range(highscorelist | length) %} 
+    {%if highscorelist[i][1] == session.get("user_name") %}
+    <tr>
+      <td><b>{{ i+1 }}.</b></td>
+      <td><b>{{ highscorelist[i][1] }}</b></td>
+      <td><b>{{ highscorelist[i][2] }}</b></td>
+    </tr>
+    {% else %}
+    <tr>
+      <td><b>{{ i+1 }}.</b></td>
+      <td>{{ highscorelist[i][1] }}</td>
+      <td>{{ highscorelist[i][2] }}</td>
+    </tr>
+    {% endif %} {% endfor %}
+  </table>
 </div>
 {% endblock %}

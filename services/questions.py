@@ -408,15 +408,15 @@ def count_highscore():
 def count_questions_answered_by():
     user_id=session.get("user_id")
 
-    sql = """SELECT COUNT(*) FROM answers_given 
-             WHERE user_id = :user_id
-             GROUP BY correct"""
+    sql = """SELECT user_id, 
+             SUM(CASE WHEN correct = True then 1 else 0 end) as correct,
+             SUM(CASE WHEN correct = False then 1 else 0 end) as uncorrect
+             FROM answers_given 
+             WHERE user_id = :user_id 
+             GROUP BY user_id"""
     result = db.session.execute(sql, {"user_id":user_id})
-    answers_raw = result.fetchall()
-    
-    answers =[item for item in answers_raw for item in item]
-    
-    return answers
+    answers = result.fetchone()
+    return answers[1:]
 
 def get_user_score():
     user_id = session.get("user_id")

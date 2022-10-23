@@ -180,13 +180,14 @@ def user_remove_question():
     return redirect("/profile")
 
 @app.route("/updatequestion/<int:id>", methods=["GET", "POST"])
+
 def update_question(id):
     question_to_update = questions.get_one_question(id)
     
     if request.method == "GET":
         
         if users.check_admin_rights() or question_to_update[11] == session.get("user_id"):
-            return render_template("updatequestion.html", id = id, question = question_to_update)
+            return render_template("updatequestion.html", id = id, question = question_to_update, is_admin = users.check_admin_rights)
     if request.method == "POST":
         
         question = request.form["question"]
@@ -235,7 +236,6 @@ def profile():
     user_questions = questions.get_questions_by_user()
     user_answered = questions.count_questions_answered_by()
     user_position = questions.get_user_position()
-    
     return render_template("profile.html",
                             user_questions = user_questions, 
                             user_answered = user_answered, 

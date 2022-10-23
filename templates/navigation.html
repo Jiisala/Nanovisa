@@ -2,17 +2,31 @@
   {% if session.user_id%}
   <nav>
     <ul>
-      <li><a href="/">Etusivu</a></li>
-      <li><a href="/newquestion">lisää uusi kysymys</a></li>
-      <li><a href="/highscores">highscore</a></li>
+      <li>
+        <a href="/"><b>Etusivu</b></a>
+      </li>
+      <li>
+        <a href="/newquestion"><b>Uusi Kysymys</b></a>
+      </li>
+      <li>
+        <a href="/highscores"><b>Highscore</b></a>
+      </li>
 
       {% if is_admin() %}
-      <li><a href="/admin">ylläpito</a></li>
+      <li>
+        <a href="/admin"><b>Ylläpito</b></a>
+      </li>
       {% endif %}
-      <li><a href="/messages">viestit</a></li>
-      <li><a href="/profile">{{ session.user_name }}</a></li>
+      <li>
+        <a href="/messages"><b>Viestit</b></a>
+      </li>
+      <li>
+        <a href="/profile"><b>Oma Sivu</b></a>
+      </li>
 
-      <li><a href="/logout">kirjaudu ulos</a></li>
+      <li>
+        <a href="/logout"><b>Kirjaudu ulos</b></a>
+      </li>
     </ul>
   </nav>
   {% endif %}

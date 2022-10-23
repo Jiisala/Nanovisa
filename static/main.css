@@ -2,27 +2,29 @@ body {
   background-color: peachpuff;
 }
 nav {
-  margin: auto;
-  max-width: 80em;
   background-color: peachpuff;
-  padding: 10px;
-  border: solid;
-  border-color: papayawhip;
 }
 nav ul {
   list-style-type: none;
-  display: flex;
-  justify-content: space-around;
-  overflow: hidden;
+  text-align: center;
+  margin: auto;
+  max-width: 80em;
+  margin: 0px;
+  padding: 0px;
 }
-nav li {
-  float: left;
+nav ul li {
+  display: inline-flex;
+  margin: 0px 0px 3px 0px;
+  padding: 0px;
+  align-items: center;
 }
 a {
-  display: block;
-  padding: 10px;
-  border-radius: 25px;
-  border: solid transparent;
+  min-width: 8em;
+  text-align: center;
+  text-decoration: none;
+  padding: 20px;
+  border: solid papayawhip;
+  color: black;
   background-color: peachpuff;
 }
 a:hover {
@@ -36,7 +38,7 @@ a:visited {
   margin: auto;
   max-width: 80em;
   text-align: center;
-  padding: 10px;
+  padding: 10px 10px 0px 10px;
   background-color: peachpuff;
   border-radius: 20px 20px 0px 0px;
 
@@ -57,7 +59,6 @@ a:visited {
   text-align: center;
   word-wrap: break-word;
   hyphens: auto;
-
   margin: auto;
   max-width: 70em;
 }
@@ -93,13 +94,12 @@ a:visited {
 }
 .clickable_label > input + div {
   /* DIV STYLES */
-  padding: 5px;
+  padding: 10px;
   cursor: pointer;
   text-align: center;
   word-wrap: break-word;
   hyphens: auto;
   border: solid peachpuff;
-  border-radius: 25px;
 }
 .clickable_label > input + div:hover {
   /* DIV STYLES */
@@ -112,7 +112,6 @@ a:visited {
 
   background-color: lightyellow;
   border: solid peachpuff;
-  border-radius: 25px;
 }
 input[type="submit"] {
   max-width: 100%;
@@ -150,4 +149,25 @@ input[type="submit"]:hover {
   word-wrap: break-word;
   hyphens: auto;
   border-radius: 25px;
+}
+table {
+  margin: auto;
+  width: 80%;
+  border: 2px solid peachpuff;
+  background-color: peachpuff;
+  padding: 5px;
+}
+td,
+th,
+tr {
+  padding: 5px;
+}
+tr:nth-child(even) {
+  background-color: papayawhip;
+}
+tr:nth-child(odd):not(:first-child) {
+  background-color: lightyellow;
+}
+th {
+  border-bottom: solid 5px papayawhip;
 }

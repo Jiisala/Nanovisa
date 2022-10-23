@@ -20,8 +20,8 @@
             required
         ></textarea><br /><br />
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-        <input type="submit" value="Lisää" />
-
+        <input type="submit" value=" Lähetä " />
+    {% if messages %}
     <H2>Saapuneet viestit</H2>
         {% for message in messages %} 
         <div class="question">
@@ -29,6 +29,6 @@
         {{message[3]}}
         </div><br />
         {% endfor %}
-      
+    {% endif %}  
     </div>
 {% endblock %}

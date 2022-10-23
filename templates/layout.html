@@ -19,8 +19,9 @@
   <body>
     <div class="header">
       <h1>NANOVISA</h1>
+      {% include "navigation.html" %}
     </div>
-    {% include "navigation.html" %}
+
     <div class="container">{% block content %}{% endblock %}</div>
   </body>
 </html>
