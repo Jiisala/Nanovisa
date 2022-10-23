@@ -1,8 +1,7 @@
 {% extends "layout.html" %} {% block content %}
 <div class="basic">
   <h2>Kirjaudu sisään</h2>
-  <p>testikäyttäjä: nimi: testi, salasana: testi</p>
-  <p>testi admin: nimi testiadmin, salasana: testiadmin</p>
+
   {% for message in get_flashed_messages(category_filter=["error_login"]) %}
   <div class="message_error">{{ message }}</div>
   {% endfor %}
